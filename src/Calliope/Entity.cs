@@ -2,7 +2,7 @@ using System;
 
 namespace Calliope
 {
-    public abstract class Entity<TId> : IInternalEventHandler where TId : IEquatable<TId>, class
+    public abstract class Entity<TId> : IInternalEventHandler where TId : class, IEquatable<TId>
     {
         private readonly Action<object> _applier;
 
