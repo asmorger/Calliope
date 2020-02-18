@@ -2,7 +2,7 @@ using System;
 
 namespace Calliope
 {
-    public abstract class Entity<TId> : IInternalEventHandler where TId : IEquatable<TId>
+    public abstract class Entity<TId> : IInternalEventHandler where TId : IEquatable<TId>, class
     {
         private readonly Action<object> _applier;
 
@@ -11,7 +11,7 @@ namespace Calliope
             _applier = applier;
         }
 
-        public TId Id { get; protected set; }
+        public TId? Id { get; }
 
         void IInternalEventHandler.Handle(object @event) => When(@event);
 

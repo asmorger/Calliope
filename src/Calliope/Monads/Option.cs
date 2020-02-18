@@ -21,7 +21,8 @@ namespace Calliope.Monads
         {
             if (this is Some<T> some && typeof(TNew).IsAssignableFrom(typeof(T)))
             {
-                return new Some<TNew>(some!.Content as TNew);
+                var typedValue = some.Content as TNew;
+                return new Some<TNew>(typedValue!);
             }
 
             return None.Value;

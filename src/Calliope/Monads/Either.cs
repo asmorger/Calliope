@@ -37,8 +37,8 @@ namespace Calliope.Monads
             if (!_isLeft) rightAction(_right!);
         }
 
-        public TLeft LeftOrDefault() => Match(l => l, r => default);
-        public TRight RightOrDefault() => Match(l => default, r => r);
+        public TLeft LeftOrDefault() => Match(l => l, r => default!);
+        public TRight RightOrDefault() => Match(l => default!, r => r);
 
         public static implicit operator Either<TLeft, TRight>(TLeft left) => new Either<TLeft, TRight>(left);
         public static implicit operator Either<TLeft, TRight>(TRight right) => new Either<TLeft, TRight>(right);
