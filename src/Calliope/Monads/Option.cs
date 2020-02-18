@@ -1,0 +1,31 @@
+using System;
+
+namespace Calliope.Monads
+{
+    public abstract class Option<T>
+    {
+        public static implicit operator Option<T>(T value) => new Some<T>(value);
+        
+        public static implicit operator Option<T>(None none) => new None<T>();
+        
+        public abstract Option<TResult> Select<TResult>(Func<T, TResult> map);
+        
+        public abstract Option<TResult> SelectOptional<TResult>(Func<T, Option<TResult>> map);
+        
+        public abstract T Where(T whenNone);
+        
+        public abstract T Where(Func<T> whenNone);
+
+        public Option<TNew> OfType<TNew>() 
+            where TNew : class
+        {
+            if (this is Some<T> some && typeof(TNew).IsAssignableFrom(typeof(T)))
+            {
+                return new Some<TNew>(some!.Content as TNew);
+            }
+
+            return None.Value;
+        }
+            
+    }
+}
