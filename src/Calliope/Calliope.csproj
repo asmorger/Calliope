@@ -4,6 +4,12 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
+        <PackageVersion>1.0.0-alpha</PackageVersion>
+        <Authors>Andrew Morger</Authors>
+        <PackageProjectUrl>https://github.com/asmorger/Calliope</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/asmorger/Calliope/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/asmorger/Calliope</RepositoryUrl>
+        <PackageTags>DDD</PackageTags>
     </PropertyGroup>
 
 </Project>
