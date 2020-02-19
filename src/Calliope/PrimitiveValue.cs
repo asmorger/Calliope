@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Calliope
 {
+    [DebuggerDisplay("Value")]
     public abstract class PrimitiveValue<T> : Value
     {
         protected PrimitiveValue(T value)

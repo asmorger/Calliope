@@ -27,6 +27,37 @@ namespace Calliope.Monads
 
             return None.Value;
         }
+
+        public void Match(Action<T> onSome, Action onNone)
+        {
+            if (this is Some<T> some)
+            {
+                onSome(some.Content);
+            }
+            else
+            {
+                onNone();
+            }
+        }
+        
+        public T Match(Func<T, T> onSome, Func<T> onNone)
+        {
+            if (this is Some<T> some)
+            {
+                return onSome(some.Content);
+            }
             
+            return onNone();
+        }
+
+        public T SomeOrValue(T value)
+        {
+            if (this is Some<T> some)
+            {
+                return some.Content;
+            }
+
+            return value;
+        }
     }
 }
