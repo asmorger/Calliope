@@ -63,6 +63,9 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
+# Publish results
+[Dd]ist/
+
 # Visual Studio 2015
 .vs/
 
@@ -71,3 +74,7 @@ msbuild.wrn
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Cake related
+tools/**
+!tools/packages.config
