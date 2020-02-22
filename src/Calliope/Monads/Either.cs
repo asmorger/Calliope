@@ -27,7 +27,19 @@ namespace Calliope.Monads
             // logically this shouldn't ever be hit, but you never know.
             throw new ArgumentException("Neither left nor right is set.");
         }
-
+        
+        public Option<T> MatchLeftOptional<T>(Func<TLeft, T> leftFunc)
+        {
+            if (_left is Some<TLeft> left) return new Some<T>(leftFunc(left));
+           return new None<T>();
+        }
+        
+        public Option<T> MatchRightOptional<T>(Func<TRight, T>? rightFunc)
+        {
+            if (_right is Some<TRight> right) return new Some<T>(rightFunc!(right));
+            return new None<T>();
+        }
+        
         public void DoRight(Action<TRight> rightAction)
         {
             if (_right is Some<TRight> right)
@@ -35,12 +47,6 @@ namespace Calliope.Monads
                 rightAction(right.Value);
             }
         }
-        
-        /*
-         I don't know if I actually need these or not.
-        public TLeft LeftOrDefault() => Match(l => l, r => default);
-        public TRight RightOrDefault() => Match(l => default, r => r);
-        */
 
         public static implicit operator Either<TLeft, TRight>(TLeft left) => new Either<TLeft, TRight>(left);
         public static implicit operator Either<TLeft, TRight>(TRight right) => new Either<TLeft, TRight>(right);
