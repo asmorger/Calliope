@@ -7,33 +7,35 @@ namespace Calliope.Monads
     {
         public Some(T value)
         {
-            Content = value;
+            Value = value;
         }
 
-        public T Content { get; }
+        public T Value { get; }
 
-        private string ContentToString => Content?.ToString() ?? "<null>";
+        public override bool HasValue => true;
+
+        private string ValueToString => Value?.ToString() ?? "<null>";
 
         public bool Equals(Some<T> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return EqualityComparer<T>.Default.Equals(Content, other.Content);
+            return EqualityComparer<T>.Default.Equals(Value, other.Value);
         }
 
-        public static implicit operator T(Some<T> some) => some.Content;
+        public static implicit operator T(Some<T> some) => some.Value;
 
         public static implicit operator Some<T>(T value) => new Some<T>(value);
 
-        public override Option<TResult> Select<TResult>(Func<T, TResult> map) => map(Content);
+        public override Option<TResult> Select<TResult>(Func<T, TResult> map) => map(Value);
 
-        public override Option<TResult> SelectOptional<TResult>(Func<T, Option<TResult>> map) => map(Content);
+        public override Option<TResult> SelectOptional<TResult>(Func<T, Option<TResult>> map) => map(Value);
 
-        public override T Where(T whenNone) => Content;
+        public override T Where(T whenNone) => Value;
 
-        public override T Where(Func<T> whenNone) => Content;
+        public override T Where(Func<T> whenNone) => Value;
 
-        public override string ToString() => $"Some({ContentToString})";
+        public override string ToString() => $"Some({ValueToString})";
 
         public override bool Equals(object obj)
         {
@@ -42,7 +44,7 @@ namespace Calliope.Monads
             return obj is Some<T> && Equals((Some<T>) obj);
         }
 
-        public override int GetHashCode() => EqualityComparer<T>.Default.GetHashCode(Content);
+        public override int GetHashCode() => EqualityComparer<T>.Default.GetHashCode(Value);
 
         public static bool operator ==(Some<T> a, Some<T> b) =>
             a is null && b is null ||

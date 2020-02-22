@@ -4,6 +4,7 @@ namespace Calliope.Monads
 {
     public sealed class None<T> : Option<T>, IEquatable<None<T>>, IEquatable<None>
     {
+        public override bool HasValue => false;
         public bool Equals(None<T> other) => true;
 
         public bool Equals(None other) => true;

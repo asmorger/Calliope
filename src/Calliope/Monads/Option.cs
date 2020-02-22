@@ -5,6 +5,7 @@ namespace Calliope.Monads
 {
     public abstract class Option<T>
     {
+        public abstract bool HasValue { get; }
         public static implicit operator Option<T>(T value) => new Some<T>(value);
         
         public static implicit operator Option<T>(None none) => new None<T>();
@@ -22,7 +23,7 @@ namespace Calliope.Monads
         {
             if (this is Some<T> some && typeof(TNew).IsAssignableFrom(typeof(T)))
             {
-                var typedValue = some.Content as TNew;
+                var typedValue = some.Value as TNew;
                 return new Some<TNew>(typedValue!);
             }
 
@@ -33,7 +34,7 @@ namespace Calliope.Monads
         {
             if (this is Some<T> some)
             {
-                onSome(some.Content);
+                onSome(some.Value);
             }
             else
             {
@@ -46,7 +47,7 @@ namespace Calliope.Monads
         {
             if (this is Some<T> some)
             {
-                return onSome(some.Content);
+                return onSome(some.Value);
             }
             
             return onNone();
@@ -58,7 +59,7 @@ namespace Calliope.Monads
         {
             if (this is Some<T> some)
             {
-                return some.Content;
+                return some.Value;
             }
 
             return value();
