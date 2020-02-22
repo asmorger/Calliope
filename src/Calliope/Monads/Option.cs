@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 
 namespace Calliope.Monads
 {
@@ -40,6 +41,7 @@ namespace Calliope.Monads
             }
         }
         
+        [Pure]
         public T Match(Func<T, T> onSome, Func<T> onNone)
         {
             if (this is Some<T> some)
@@ -50,14 +52,16 @@ namespace Calliope.Monads
             return onNone();
         }
 
-        public T SomeOrValue(T value)
+        // I want the lazy initialization of the value so we don't waste execution cycles if we don't need them
+        [Pure]
+        public T SomeOrValue(Func<T> value)
         {
             if (this is Some<T> some)
             {
                 return some.Content;
             }
 
-            return value;
+            return value();
         }
     }
 }
