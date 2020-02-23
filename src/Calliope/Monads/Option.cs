@@ -55,7 +55,7 @@ namespace Calliope.Monads
 
         // I want the lazy initialization of the value so we don't waste execution cycles if we don't need them
         [Pure]
-        public T SomeOrValue(Func<T> value)
+        public T ValueOrDefault(Func<T> value)
         {
             if (this is Some<T> some)
             {
@@ -64,5 +64,14 @@ namespace Calliope.Monads
 
             return value();
         }
+
+        public T ValueOrThrow()
+        {
+            if (this is Some<T> some) return some.Value;
+            throw new Exception("Value undefined.");
+        }
+
+        public bool IsSome() => this is Some<T>;
+        public bool IsNone() => this is None<T>;
     }
 }

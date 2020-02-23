@@ -27,16 +27,46 @@ namespace Calliope.Monads
             // logically this shouldn't ever be hit, but you never know.
             throw new ArgumentException("Neither left nor right is set.");
         }
-        
-        public Option<T> MatchLeftOptional<T>(Func<TLeft, T> leftFunc)
+
+        public Option<TLeft> MatchLeft(Func<TLeft, TLeft>? leftFunc = null)
         {
-            if (_left is Some<TLeft> left) return new Some<T>(leftFunc(left));
-           return new None<T>();
+            if (_left is Some<TLeft> left)
+            {
+                if (leftFunc != null)
+                {
+                    return new Some<TLeft>(leftFunc(left));
+                }
+
+                return new Some<TLeft>(left.Value);
+            }
+            
+            return new None<TLeft>();
         }
         
-        public Option<T> MatchRightOptional<T>(Func<TRight, T>? rightFunc)
+        public Option<T> MatchLeft<T>(Func<TLeft, T> leftFunc)
         {
-            if (_right is Some<TRight> right) return new Some<T>(rightFunc!(right));
+            if (_left is Some<TLeft> left) return new Some<T>(leftFunc(left));
+            return new None<T>();
+        }
+
+        public Option<TRight> MatchRight(Func<TRight, TRight>? rightFunc = null)
+        {
+            if (_right is Some<TRight> right)
+            {
+                if (rightFunc != null)
+                {
+                    return new Some<TRight>(rightFunc(right));
+                }
+                
+                return new Some<TRight>(right.Value);
+            }
+            
+            return new None<TRight>();
+        }
+        
+        public Option<T> MatchRight<T>(Func<TRight, T> rightFunc)
+        {
+            if (_right is Some<TRight> right) return new Some<T>(rightFunc(right));
             return new None<T>();
         }
         

@@ -9,6 +9,7 @@ var root = MakeAbsolute(Directory("../"));
 var src = root + "/src";
 var sln = src + "/Calliope.sln";
 var dist = root + "/dist";
+var tests = root + "/tests";
 var buildProps = src + "/Directory.build.props";
 
 var version = "1.0.0-alpha";
@@ -75,9 +76,26 @@ Task("Version")
             });
     });
 
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() => {
+        var testProjects = GetFiles($"{tests}/**/*.csproj");
+
+        var settings = new DotNetCoreTestSettings
+        {
+            Configuration = "Release",
+            ArgumentCustomization = args => args.Append($"--no-restore --no-build")
+        };
+
+        foreach (var testProject in testProjects)
+        {
+            DotNetCoreTest(testProject.FullPath, settings);
+        }
+    });
+
 // Finds all projects, iterates over them, and publishes them to an individual folder
 Task("Package")
-    .IsDependentOn("Build")
+    .IsDependentOn("Test")
     .Does(() => {
         var settings = new DotNetCorePackSettings
         {
