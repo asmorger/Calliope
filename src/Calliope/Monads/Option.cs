@@ -55,14 +55,14 @@ namespace Calliope.Monads
 
         // I want the lazy initialization of the value so we don't waste execution cycles if we don't need them
         [Pure]
-        public T ValueOrDefault(Func<T> value)
+        public T ValueOrFallback(Func<T> fallback)
         {
             if (this is Some<T> some)
             {
                 return some.Value;
             }
 
-            return value();
+            return fallback();
         }
 
         public T ValueOrThrow()
