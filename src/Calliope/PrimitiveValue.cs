@@ -19,7 +19,8 @@ namespace Calliope
             yield return Value;
         }
 
-        public static TOutput Create(TInput source, IValidator<TInput, TOutput> validator)
+        // makes this protected so that we can provide a public wrapper that defines the required validator
+        protected static TOutput Create(TInput source, IValidator<TInput, TOutput> validator)
         {
             var validationResult = validator.Validate(source);
             
