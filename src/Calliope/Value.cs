@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Calliope
 {
-    public abstract class Value
+    public abstract class Value<T>
     {
-        protected abstract IEnumerable<object> GetEqualityComponents();
+        protected abstract IEnumerable<object?> GetEqualityComponents();
 
         public override bool Equals(object obj)
         {
@@ -15,7 +15,7 @@ namespace Calliope
             if (GetType() != obj.GetType())
                 return false;
 
-            var valueObject = (Value) obj;
+            var valueObject = (Value<T>) obj;
 
             return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
         }
@@ -32,7 +32,7 @@ namespace Calliope
                 });
         }
 
-        public static bool operator ==(Value a, Value b)
+        public static bool operator ==(Value<T> a, Value<T> b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
@@ -43,6 +43,6 @@ namespace Calliope
             return a.Equals(b);
         }
 
-        public static bool operator !=(Value a, Value b) => !(a == b);
+        public static bool operator !=(Value<T> a, Value<T> b) => !(a == b);
     }
 }

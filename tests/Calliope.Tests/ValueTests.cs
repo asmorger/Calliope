@@ -13,7 +13,7 @@ namespace Calliope.Tests
         public void Two_value_objects_with_different_values_should_not_be_equal() =>
             Assert.NotEqual(new TestValue(1024), new TestValue(2049));
 
-        private class TestValue : Value
+        private class TestValue : Value<TestValue>
         {
             public TestValue(int number)
             {

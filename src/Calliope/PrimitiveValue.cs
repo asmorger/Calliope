@@ -1,22 +1,33 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Calliope.Validation;
 
 namespace Calliope
 {
     [DebuggerDisplay("Value")]
-    public abstract class PrimitiveValue<T> : Value
+    public abstract class PrimitiveValue<TInput, TOutput> : Value<TOutput>
     {
-        protected PrimitiveValue(T value)
+        protected PrimitiveValue(TInput value)
         {
             Value = value;
         }
 
-        public T Value { get; }
+        public TInput Value { get; }
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        protected override IEnumerable<object?> GetEqualityComponents()
         {
-            if (Value is null) yield return default(T)!;
-            else yield return Value!;
+            yield return Value;
+        }
+
+        public static TOutput Create(TInput source, IValidator<TInput, TOutput> validator)
+        {
+            var validationResult = validator.Validate(source);
+            
+            // this will kick it out if it's not valid
+            validationResult.DoRight(err => throw new ValidationFailedException(err));
+            
+            var result = validationResult.MatchLeft();
+            return result.ValueOrThrow();
         }
     }
 }
