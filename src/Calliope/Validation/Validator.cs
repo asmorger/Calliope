@@ -4,20 +4,15 @@ using System.Linq;
 
 namespace Calliope.Validation
 {
-    public interface IValidator<TInput, TOutput>
+    public interface IValidator<TInput>
     {
-        ValidationResult<TOutput> Validate(TInput source);
-
-        TOutput Create(TInput input);
-
+        ValidationResult<TInput> Validate(TInput source);
         IEnumerable<(Func<TInput, bool> rule, string error)> Rules();
     }
 
-    public abstract class Validator<TInput, TOutput> : IValidator<TInput, TOutput>
+    public abstract class Validator<TInput> : IValidator<TInput>
     {
-        public abstract TOutput Create(TInput input);
-        
-        public ValidationResult<TOutput> Validate(TInput source)
+        public ValidationResult<TInput> Validate(TInput source)
         {
             var failures = new List<string>();
 
@@ -31,9 +26,9 @@ namespace Calliope.Validation
                 }
             }
             
-            if(failures.Any()) return new ValidationResult<TOutput>(failures);
+            if(failures.Any()) return new ValidationResult<TInput>(failures);
             
-            return new ValidationResult<TOutput>(Create(source));
+            return new ValidationResult<TInput>(new ValidationSuccess<TInput>(source));
         }
 
         public abstract IEnumerable<(Func<TInput, bool> rule, string error)> Rules();

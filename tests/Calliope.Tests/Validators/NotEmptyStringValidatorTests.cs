@@ -8,11 +8,11 @@ namespace Calliope.Tests.Validators
 {
     public class NotEmptyStringValidatorTests
     {
-        private readonly NotEmptyStringValidator<TestValue> _validator;
+        private readonly NotEmptyStringValidator _validator;
 
         public NotEmptyStringValidatorTests()
         {
-            _validator = new NotEmptyStringValidator<TestValue>(1, 100, x => new TestValue(x));
+            _validator = new NotEmptyStringValidator(1, 100);
         }
 
         [Fact]
@@ -30,12 +30,6 @@ namespace Calliope.Tests.Validators
         
         [Fact]
         public void Validator_succeeds_when_string_is_valid() =>
-            Assert.IsAssignableFrom<Option<TestValue>>(_validator.Validate("Engage").MatchLeft());
-
-        
-        private class TestValue : PrimitiveValue<string, TestValue>
-        {
-            public TestValue(string value) : base(value) { }
-        }
+            Assert.IsAssignableFrom<Option<ValidationSuccess<string>>>(_validator.Validate("Engage").MatchLeft());
     }
 }
