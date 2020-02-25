@@ -25,15 +25,16 @@ namespace Calliope
         // makes this protected so that we can provide a public wrapper that defines the required validator
         protected static TOutput Create(TInput source, Func<TInput, TOutput> factory)
         {
-            var validator = new TValidator();
-            var validationResult = validator.Validate(source);
+            var validationResult = GetValidator().Validate(source);
             
             // this will kick it out if it's not valid
-            validationResult.DoRight(err => throw new ValidationFailedException(err));
+            validationResult.DoRight(err => throw new ValidationFailedException(typeof(TOutput).Name, err));
             
             var result = validationResult.MatchLeft();
             return factory(result.ValueOrThrow().GoodValue);
         }
-        
+
+        public static IValidator<TInput> GetValidator() => new TValidator();
+
     }
 }

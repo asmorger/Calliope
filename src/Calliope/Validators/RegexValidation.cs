@@ -5,6 +5,9 @@ using Calliope.Validation;
 
 namespace Calliope.Validators
 {
+    /// <summary>
+    /// String validator that applies a regex check against the input.
+    /// </summary>
     public abstract class RegexValidation : Validator<string>
     {
         protected readonly Regex Regex;
@@ -16,7 +19,7 @@ namespace Calliope.Validators
         public override IEnumerable<(Func<string, bool> rule, string error)> Rules() => 
             new (Func<string, bool> rule, string error)[]
             {
-                (DoesNotMatchRegex, "Value does not match expected format.")
+                (DoesNotMatchRegex, $"{Placeholder.TypeName} does not match expected format.")
             };
 
         private bool DoesNotMatchRegex(string input) => !Regex.IsMatch(input);
