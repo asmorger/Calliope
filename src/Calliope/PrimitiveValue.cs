@@ -1,40 +1,63 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using Calliope.Validation;
 
 namespace Calliope
 {
     [DebuggerDisplay("Value")]
     public abstract class PrimitiveValue<TInput, TOutput, TValidator> : Value<TOutput>
-        
+        where TOutput : PrimitiveValue<TInput, TOutput, TValidator>, new()
         where TValidator : IValidator<TInput>, new()
     {
-        protected PrimitiveValue(TInput value)
+        private static readonly Func<TOutput> Factory;
+        
+        static PrimitiveValue()
         {
-            Value = value;
+            var ctor = typeof(TOutput)
+                .GetTypeInfo()
+                .DeclaredConstructors
+                .First();
+
+            var argsExp = new Expression[0];
+            var newExp = Expression.New(ctor, argsExp);
+            var lambda = Expression.Lambda(typeof(Func<TOutput>), newExp);
+            
+            Factory = (Func<TOutput>)lambda.Compile();
         }
 
-        public TInput Value { get; }
+        // default value suppresses the C# 8 nullable warning
+        public TInput Value { get; private set; } = default!;
 
         protected override IEnumerable<object?> GetEqualityComponents()
         {
             yield return Value;
         }
 
+
         // makes this protected so that we can provide a public wrapper that defines the required validator
-        protected static TOutput Create(TInput source, Func<TInput, TOutput> factory)
+        public static TOutput Create(TInput source)
         {
-            var validationResult = GetValidator().Validate(source);
+            var output = Factory();
+            var validationResult = Validator.Validate(source);
             
             // this will kick it out if it's not valid
             validationResult.DoRight(err => throw new ValidationFailedException(typeof(TOutput).Name, err));
             
             var result = validationResult.MatchLeft();
-            return factory(result.ValueOrThrow().GoodValue);
+            
+            
+            output.Value = result.ValueOrThrow().GoodValue;
+
+            return output;
         }
+        
+        public static implicit operator TInput(PrimitiveValue<TInput, TOutput, TValidator> value) => value.Value;
 
-        public static IValidator<TInput> GetValidator() => new TValidator();
-
+        public static TValidator Validator => new TValidator();
+        
     }
 }

@@ -15,12 +15,6 @@ namespace Calliope.Tests
         
         private class TestValue : PrimitiveValue<int, TestValue, PositiveIntegerValidator>
         {
-            private TestValue(int value) : base(value)
-            {
-                
-            }
-
-            public static TestValue Create(int value) => Create(value, x => new TestValue(x));
         }
     }
 }
