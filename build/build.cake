@@ -59,6 +59,8 @@ Task("Version")
         {
             version = $"{version}-{fileSuffix}";
         }
+
+        Information($"Applying version {version}");
     });
 
 // Build using the build configuration specified as an argument.  Disables build warning about file versions not being semver.
@@ -83,7 +85,7 @@ Task("Test")
 
         var settings = new DotNetCoreTestSettings
         {
-            Configuration = "Release",
+            Configuration = configuration,
             ArgumentCustomization = args => args.Append($"--no-restore --no-build")
         };
 
@@ -99,7 +101,7 @@ Task("Package")
     .Does(() => {
         var settings = new DotNetCorePackSettings
         {
-            Configuration = "Release",
+            Configuration = configuration,
             OutputDirectory = dist,
             ArgumentCustomization = args => args.Append($"--no-restore --no-build -p:PackageVersion={version}")
         };

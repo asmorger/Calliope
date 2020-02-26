@@ -1,9 +1,32 @@
+using Calliope.Validators;
+using FluentValidation;
+using FluentValidation.TestHelper;
 using Xunit;
 
 namespace Calliope.FluentValidation.Tests
 {
-    public class PrimitiveValueValidatorTests
+    public class ValidatorTests
     {
+        internal class TestInteger : PrimitiveValue<int, TestInteger, PositiveIntegerValidator>
+        {
+            private TestInteger(int value) : base(value) { }
+
+            public static implicit operator int(TestInteger t) => t.Value;
+        }
+        
+        internal class TestRequestValidator : AbstractValidator<TestRequest>
+        {
+            internal TestRequestValidator()
+            {
+                RuleFor(x => x.Value).ForDomainValue(TestInteger.GetValidator());
+            }
+        }
+
+        internal class TestRequest
+        {
+            public int Value { get; set; }
+        }
+        
         [Fact]
         public void Validator_can_be_created() => Assert.NotNull(new PrimitiveValueValidator<int>(TestInteger.GetValidator()));
 
@@ -33,5 +56,9 @@ namespace Calliope.FluentValidation.Tests
 
             Assert.Equal("{PropertyName} must be above zero", result.Errors[0].ErrorMessage);
         }
+        
+        [Fact]
+        public void Extension_method_for_value_object_sets_validator() =>
+            new TestRequestValidator().ShouldHaveValidationErrorFor(r => r.Value, -42);
     }
 }
