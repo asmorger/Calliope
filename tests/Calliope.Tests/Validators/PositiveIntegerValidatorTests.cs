@@ -1,4 +1,3 @@
-using Calliope.Monads;
 using Calliope.Validation;
 using Calliope.Validators;
 using Xunit;
@@ -15,6 +14,6 @@ namespace Calliope.Tests.Validators
 
         [Fact]
         public void Validator_throws_exception_when_precondition_is_not_met() =>
-            Assert.IsAssignableFrom<Option<ValidationFailures>>(_validator.Validate(-1).MatchRight());
+            Assert.IsAssignableFrom<Optional<ValidationFailures>>(_validator.Validate(-1).MatchRight());
     }
 }

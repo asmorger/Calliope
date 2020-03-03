@@ -5,9 +5,9 @@ using FluentValidation.Validators;
 
 namespace Calliope.FluentValidation
 {
-    public class PrimitiveValueValidator<T> : AbstractValidator<T>
+    public class ValueValidator<T> : AbstractValidator<T>
     {
-        public PrimitiveValueValidator(Validation.IValidator<T> validator)
+        public ValueValidator(Validation.IValidator<T> validator)
         {
             RuleFor(x => x).Custom((item, context) =>
             {
@@ -17,7 +17,7 @@ namespace Calliope.FluentValidation
 
                 if (errors.IsSome())
                 {
-                    HandleErrorState(errors.ValueOrThrow(), context);
+                    HandleErrorState(errors.Unwrap(), context);
                 }
             });
         }

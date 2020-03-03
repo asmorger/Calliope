@@ -12,8 +12,16 @@ namespace Calliope.Tests
         [Fact]
         public void Two_value_objects_with_different_values_should_not_be_equal() =>
             Assert.NotEqual(TestValue.Create(1024), TestValue.Create(2049));
+
+        [Fact]
+        public void Test()
+        {
+            var value = TestValue.Create(42);
+            
+            Assert.NotNull(value);
+        }
         
-        private class TestValue : PrimitiveValue<int, TestValue, PositiveIntegerValidator>
+        private class TestValue : Value<int, TestValue, PositiveIntegerValidator>
         {
         }
     }

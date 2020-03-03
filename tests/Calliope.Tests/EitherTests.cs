@@ -1,4 +1,3 @@
-using Calliope.Monads;
 using Xunit;
 
 namespace Calliope.Tests
@@ -11,7 +10,7 @@ namespace Calliope.Tests
             var either = new LeftOrRight(new Left("Frodo"));
             var result = either.MatchLeft(x => x.Name);
 
-            Assert.Equal(new Some<string>("Frodo"), result);
+            Assert.Equal(Optional.Create("Frodo"), result);
         }
         
         [Fact]
@@ -20,7 +19,7 @@ namespace Calliope.Tests
             var either = new LeftOrRight(new Right(4));
             var result = either.MatchLeft(x => x.Name);
 
-            Assert.Equal(new None<string>(), result);
+            Assert.Equal(Optional.None<string>(), result);
         }
         
         [Fact]
@@ -29,7 +28,7 @@ namespace Calliope.Tests
             var either = new LeftOrRight(new Right(4));
             var result = either.MatchRight(x => x.Number * 2);
 
-            Assert.Equal(new Some<int>(8), result);
+            Assert.Equal(Optional.Create<int>(8), result);
         }
         
         [Fact]
@@ -38,7 +37,7 @@ namespace Calliope.Tests
             var either = new LeftOrRight(new Left("Samwise"));
             var result = either.MatchRight(x => x.Number);
 
-            Assert.Equal(new None<int>(), result);
+            Assert.Equal(Optional.None<int>(), result);
         }
 
         private class Left

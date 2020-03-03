@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Calliope.Monads;
 using Calliope.Validation;
 
 namespace Calliope.Validators
@@ -10,10 +9,10 @@ namespace Calliope.Validators
     /// </summary>
     public class NullableStringValidator : Validator<string>
     {
-        private readonly Option<int> _minimumLength;
-        private readonly Option<int> _maximumLength;
+        private readonly Optional<int> _minimumLength;
+        private readonly Optional<int> _maximumLength;
         
-        public NullableStringValidator(Option<int> minimumLength, Option<int> maximumLength)
+        public NullableStringValidator(Optional<int> minimumLength, Optional<int> maximumLength)
         {
             _minimumLength = minimumLength;
             _maximumLength = maximumLength;
@@ -26,9 +25,9 @@ namespace Calliope.Validators
             };
 
         private bool IsLessToMinimumLength(string? input) =>
-            _minimumLength.IsSome() && input?.Length < _minimumLength.ValueOrThrow();
+            _minimumLength.IsSome() && input?.Length < _minimumLength.Unwrap();
 
         private bool IsMoreThanMaximumLength(string? input) =>
-            _maximumLength.IsSome() && input?.Length > _maximumLength.ValueOrThrow();
+            _maximumLength.IsSome() && input?.Length > _maximumLength.Unwrap();
     }
 }

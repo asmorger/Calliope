@@ -7,7 +7,7 @@ namespace Calliope.FluentValidation.Tests
 {
     public class ValidatorTests
     {
-        internal class TestInteger : PrimitiveValue<int, TestInteger, PositiveIntegerValidator>
+        internal class TestInteger : Value<int, TestInteger, PositiveIntegerValidator>
         {
         }
         
@@ -15,7 +15,7 @@ namespace Calliope.FluentValidation.Tests
         {
             internal TestRequestValidator()
             {
-                RuleFor(x => x.Value).Targeting(TestInteger.Validator);
+                RuleFor(x => x.Value).TargetingValue(TestInteger.Validator);
             }
         }
 
@@ -25,12 +25,12 @@ namespace Calliope.FluentValidation.Tests
         }
         
         [Fact]
-        public void Validator_can_be_created() => Assert.NotNull(new PrimitiveValueValidator<int>(TestInteger.Validator));
+        public void Validator_can_be_created() => Assert.NotNull(new ValueValidator<int>(TestInteger.Validator));
 
         [Fact]
         public void Valdiator_succeeds_when_item_is_valid()
         {
-            var validator = new PrimitiveValueValidator<int>(TestInteger.Validator);
+            var validator = new ValueValidator<int>(TestInteger.Validator);
             var result = validator.Validate(42);
             
             Assert.True(result.IsValid);
@@ -39,7 +39,7 @@ namespace Calliope.FluentValidation.Tests
         [Fact]
         public void Valdiator_fails_when_item_is_invalid()
         {
-            var validator = new PrimitiveValueValidator<int>(TestInteger.Validator);
+            var validator = new ValueValidator<int>(TestInteger.Validator);
             var result = validator.Validate(-42);
             
             Assert.False(result.IsValid);
@@ -48,7 +48,7 @@ namespace Calliope.FluentValidation.Tests
         [Fact]
         public void Valdiator_sets_proper_validation_message_when_item_is_invalid()
         {
-            var validator = new PrimitiveValueValidator<int>(TestInteger.Validator);
+            var validator = new ValueValidator<int>(TestInteger.Validator);
             var result = validator.Validate(-42);
 
             Assert.Equal("{PropertyName} must be above zero", result.Errors[0].ErrorMessage);
