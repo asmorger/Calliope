@@ -64,10 +64,13 @@ namespace Calliope
                 value => mapper(value).AsOptional());
         }
 
-        public static T DefaultValue<T>(this Optional<T> optional, T defaultValue) where T : notnull =>
+        public static T Unwrap<T>(this Optional<T> optional, T defaultValue) where T : notnull =>
             optional.Match(
                 value => value,
                 () => defaultValue);
+        
+        public static T Unwrap<T>(this Optional<T> optional, Func<T> defaultValue) where T : notnull =>
+            optional.Match(value => value, defaultValue);
 
         public static Optional<T> Filter<T>(this Optional<T> optional, Predicate<T> predicate) where T : notnull =>
             optional.Bind(
