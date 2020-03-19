@@ -66,11 +66,6 @@ namespace Calliope
             
             Factory = (Func<TOutput>)creationLambda.Compile();
         }
-
-        protected ValueObject(TInput source)
-        {
-            Value = source;
-        }
         
         /// <summary>
         /// The current value

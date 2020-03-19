@@ -9,7 +9,6 @@ namespace Calliope.FluentValidation.Tests
     {
         internal class TestInteger : ValueObject<int, TestInteger, PositiveIntegerValidator>
         {
-            public TestInteger(int source) : base(source) { }
         }
         
         internal class TestRequestValidator : AbstractValidator<TestRequest>
