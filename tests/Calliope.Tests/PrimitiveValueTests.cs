@@ -7,22 +7,23 @@ namespace Calliope.Tests
     {
         [Fact]
         public void Two_value_objects_with_the_same_value_should_be_equal() =>
-            Assert.Equal(TestValue.Create(42), TestValue.Create(42));
+            Assert.Equal(new TestValueObject(42), new TestValueObject(42));
         
         [Fact]
         public void Two_value_objects_with_different_values_should_not_be_equal() =>
-            Assert.NotEqual(TestValue.Create(1024), TestValue.Create(2049));
+            Assert.NotEqual(new TestValueObject(1024),  new TestValueObject(2049));
 
         [Fact]
         public void Test()
         {
-            var value = TestValue.Create(42);
+            var value = new TestValueObject(42);
             
             Assert.NotNull(value);
         }
         
-        private class TestValue : Value<int, TestValue, PositiveIntegerValidator>
+        private class TestValueObject : ValueObject<int, TestValueObject, PositiveIntegerValidator>
         {
+            public TestValueObject(int source) : base(source) { }
         }
     }
 }
