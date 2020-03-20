@@ -7,7 +7,17 @@ using Calliope.Validation;
 
 namespace Calliope
 {
-    public abstract class ValueObject<T>
+    public interface IValueObject
+    {
+        
+    }
+
+    public interface IValueObject<out TEntity> : IValueObject
+    {
+        TEntity Value { get; }
+    }
+    
+    public abstract class ValueObject<T> : IValueObject
     {
         protected abstract IEnumerable<object?> GetEqualityComponents();
 
@@ -50,7 +60,7 @@ namespace Calliope
         public static bool operator !=(ValueObject<T> a, ValueObject<T> b) => !(a == b);
     }
     
-    public abstract class ValueObject<TInput, TOutput, TValidator> : ValueObject<TOutput>
+    public abstract class ValueObject<TInput, TOutput, TValidator> : ValueObject<TOutput>, IValueObject<TInput>
         where TOutput : ValueObject<TInput, TOutput, TValidator>
         where TValidator : IValidator<TInput>, new()
     {
@@ -109,6 +119,6 @@ namespace Calliope
         /// Overrides ToString so that we get useful DebuggerDisplay.
         /// Takes this route over a DebuggerDisplayAttribute because they don't follow derrived types.
         /// <inheritdoc />
-        public override string ToString() => $"Value: {Value}";
+        public override string ToString() => Value.ToString();
     }
 }
