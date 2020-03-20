@@ -30,11 +30,25 @@ namespace Calliope.Automapper
                 
                 var targetingType = genericInterfaceDefinition.GenericTypeArguments.First();
 
-                var converterType = typeof(FromValueObjectToValueConverter<,>);
-                var genericConverter = converterType.MakeGenericType(valueObjectType, targetingType);
-                
-                CreateMap(valueObjectType, targetingType).ConvertUsing(genericConverter);
+                RegisterFromValueObjectToTarget(valueObjectType, targetingType);
+                RegisterFromTargetToValueObject(valueObjectType, targetingType);
             }
+        }
+
+        private void RegisterFromValueObjectToTarget(Type valueObjectType, Type targetingType)
+        {
+            var converterType = typeof(FromValueObjectToValueConverter<,>);
+            var genericConverter = converterType.MakeGenericType(valueObjectType, targetingType);
+                
+            CreateMap(valueObjectType, targetingType).ConvertUsing(genericConverter);
+        }
+
+        private void RegisterFromTargetToValueObject(Type valueObjectType, Type targetingType)
+        {
+            var converterType = typeof(FromTargetToValueObjectConverter<,>);
+            var genericConverter = converterType.MakeGenericType(targetingType, valueObjectType);
+                
+            CreateMap(targetingType, valueObjectType).ConvertUsing(genericConverter);
         }
     }
 }

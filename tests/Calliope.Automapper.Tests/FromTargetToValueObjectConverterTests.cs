@@ -4,30 +4,30 @@ using Xunit;
 
 namespace Calliope.Automapper.Tests
 {
-    public class FromValueObjectToValueConverterTests
+    public class FromTargetToValueObjectConverterTests
     {
         [Fact]
         public void Configuration_is_valid()
         {
             var configuration = new MapperConfiguration(cfg => {
-                cfg.CreateMap(typeof(TheAnswer), typeof(int)).ConvertUsing(typeof(FromValueObjectToValueConverter<TheAnswer,int>));
+                cfg.CreateMap(typeof(int), typeof(TheAnswer)).ConvertUsing(typeof(FromTargetToValueObjectConverter<int, TheAnswer>));
             });
 
             configuration.AssertConfigurationIsValid();
         }
-
+        
         [Fact]
         public void Configuration_maps_properties()
         {
             var configuration = new MapperConfiguration(cfg => {
-                cfg.CreateMap(typeof(TheAnswer), typeof(int)).ConvertUsing(typeof(FromValueObjectToValueConverter<TheAnswer,int>));
-                cfg.CreateMap<Example, ExampleDto>();
+                cfg.CreateMap(typeof(int), typeof(TheAnswer)).ConvertUsing(typeof(FromTargetToValueObjectConverter<int, TheAnswer>));
+                cfg.CreateMap<ExampleDto, Example>();
             });
 
             var mapper = configuration.CreateMapper();
-            var destination = mapper.Map<ExampleDto>(new Example());
+            var destination = mapper.Map<Example>(new ExampleDto(42));
             
-            Assert.Equal(42, destination.Answer);
+            Assert.Equal(TheAnswer.Create(42), destination.Answer);
         }
     }
 }

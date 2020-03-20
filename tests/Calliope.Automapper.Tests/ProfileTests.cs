@@ -1,4 +1,5 @@
 using AutoMapper;
+using Calliope.Automapper.Tests.Models;
 using Xunit;
 
 namespace Calliope.Automapper.Tests
