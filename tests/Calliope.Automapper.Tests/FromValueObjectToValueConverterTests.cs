@@ -1,5 +1,4 @@
 using AutoMapper;
-using Calliope.Validators;
 using Xunit;
 
 namespace Calliope.Automapper.Tests
@@ -29,18 +28,5 @@ namespace Calliope.Automapper.Tests
             
             Assert.Equal(42, destination.Answer);
         }
-    }
-    
-    public class TheAnswer : ValueObject<int, TheAnswer, EmptyValidator<int>> { }
-
-    public class Example
-    {
-        public Example() => Answer = TheAnswer.Create(42);
-
-        public TheAnswer Answer { get; }
-    }
-    public class ExampleDto
-    {
-        public int Answer { get; set; }
     }
 }
