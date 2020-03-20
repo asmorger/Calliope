@@ -1,7 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <VersionSuffix>$(VersionSuffix)</VersionSuffix>
+        <Authors>Andrew Morger</Authors>
+        <PackageProjectUrl>https://github.com/asmorger/Calliope</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/asmorger/Calliope/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/asmorger/Calliope</RepositoryUrl>
+        <PackageTags>DDD</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
