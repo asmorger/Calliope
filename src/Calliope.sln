@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.Automapper", "Call
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.Automapper.Tests", "..\tests\Calliope.Automapper.Tests\Calliope.Automapper.Tests.csproj", "{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.EntityFramework", "Calliope.EntityFramework\Calliope.EntityFramework.csproj", "{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.EntityFramework.Tests", "..\tests\Calliope.EntityFramework.Tests\Calliope.EntityFramework.Tests.csproj", "{368B2777-6E61-4FE3-B3E0-6208BE63B000}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,10 +48,19 @@ Global
 		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{368B2777-6E61-4FE3-B3E0-6208BE63B000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{368B2777-6E61-4FE3-B3E0-6208BE63B000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{368B2777-6E61-4FE3-B3E0-6208BE63B000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{368B2777-6E61-4FE3-B3E0-6208BE63B000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80799E3E-4DB7-4891-BC98-BC4B08EF3FBB} = {F82149C8-C989-4538-A0EE-23EC3CAAF90A}
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97} = {F82149C8-C989-4538-A0EE-23EC3CAAF90A}
 		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5} = {F82149C8-C989-4538-A0EE-23EC3CAAF90A}
+		{368B2777-6E61-4FE3-B3E0-6208BE63B000} = {F82149C8-C989-4538-A0EE-23EC3CAAF90A}
 	EndGlobalSection
 EndGlobal

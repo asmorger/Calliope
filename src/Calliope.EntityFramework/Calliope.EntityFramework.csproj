@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <VersionSuffix>$(VersionSuffix)</VersionSuffix>
+        <Authors>Andrew Morger</Authors>
+        <PackageProjectUrl>https://github.com/asmorger/Calliope</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/asmorger/Calliope/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/asmorger/Calliope</RepositoryUrl>
+        <PackageTags>DDD</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Calliope\Calliope.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    </ItemGroup>
+
+</Project>
