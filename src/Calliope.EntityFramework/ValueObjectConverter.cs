@@ -8,7 +8,7 @@ namespace Calliope.EntityFramework
         public ValueObjectConverter(ConverterMappingHints mappingHints = null)
             : base(
                 x => ValueObjectFactory.FromValueObject(x), 
-                x => (TValueObject) ValueObjectFactory.FromTarget(x, typeof(TValueObject))
+                x => (TValueObject) ValueObjectFactory.FromValue(x, typeof(TValueObject))
             , mappingHints)
         {
         }

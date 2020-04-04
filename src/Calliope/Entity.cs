@@ -1,35 +1,17 @@
 using System;
-using System.Collections.Generic;
 
 namespace Calliope
 {
+    // https://enterprisecraftsmanship.com/posts/entity-base-class/
+    // https://enterprisecraftsmanship.com/posts/new-online-course-ddd-and-ef-core/
+    // implementation based upon Vladimir Khorikov's solution
     public abstract class Entity
     {
-        private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
-        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
+        protected Entity() { }
+        protected Entity(long id) : this() => Id = id;
 
-        public int Id { get; }
-
-        protected Entity()
-        {
-        }
-
-        protected Entity(int id)
-            : this()
-        {
-            Id = id;
-        }
-
-        protected void RaiseDomainEvent(IDomainEvent domainEvent)
-        {
-            _domainEvents.Add(domainEvent);
-        }
-
-        public void ClearDomainEvents()
-        {
-            _domainEvents.Clear();
-        }
-
+        public virtual long Id { get; }
+        
         public override bool Equals(object obj)
         {
             if (!(obj is Entity other))
@@ -58,19 +40,13 @@ namespace Calliope
             return a.Equals(b);
         }
 
-        public static bool operator !=(Entity a, Entity b)
-        {
-            return !(a == b);
-        }
+        public static bool operator !=(Entity a, Entity b) => !(a == b);
 
-        public override int GetHashCode()
-        {
-            return (GetRealType().ToString() + Id).GetHashCode();
-        }
+        public override int GetHashCode() => (GetRealType().ToString() + Id).GetHashCode();
 
         private Type GetRealType()
         {
-            Type type = GetType();
+            var type = GetType();
 
             if (type.ToString().Contains("Castle.Proxies."))
                 return type.BaseType;

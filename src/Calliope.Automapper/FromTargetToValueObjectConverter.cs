@@ -6,6 +6,6 @@ namespace Calliope.Automapper
         where TValueObject : IValueObject<TValue>
     {
         public TValueObject Convert(TValue source, TValueObject destination, ResolutionContext context) => 
-            (TValueObject) ValueObjectFactory.FromTarget(source, typeof(TValueObject));
+            (TValueObject) ValueObjectFactory.FromValue(source, typeof(TValueObject));
     }
 }

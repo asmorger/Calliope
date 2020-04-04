@@ -1,48 +1,15 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Calliope
 {
-    public interface IInternalEventHandler
+    // https://enterprisecraftsmanship.com/posts/new-online-course-ddd-and-ef-core/
+    // implementation based upon Vladimir Khorikov's solution
+    public abstract class AggregateRoot : Entity
     {
-        void Handle(object @event);
-    }
-    
-    public abstract class AggregateRoot<TId> : IInternalEventHandler
-        where TId : ValueObject<TId>
-    {
-        private readonly List<object> _changes = new List<object>();
+        private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
 
-        public TId Id { get; protected set; }
-
-        public int Version { get; private set; } = -1;
-
-        void IInternalEventHandler.Handle(object @event) => When(@event);
-
-        protected abstract void When(object @event);
-
-        protected void Apply(object @event)
-        {
-            When(@event);
-            EnsureValidState();
-            _changes.Add(@event);
-        }
-
-        public IEnumerable<object> GetChanges() => _changes.AsEnumerable();
-
-        public void Load(IEnumerable<object> history)
-        {
-            foreach (var e in history)
-            {
-                When(e);
-                Version++;
-            }
-        }
-
-        public void ClearChanges() => _changes.Clear();
-
-        protected abstract void EnsureValidState();
-
-        protected void ApplyToEntity(IInternalEventHandler entity, object @event) => entity?.Handle(@event);
+        protected void RaiseDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+        public void ClearDomainEvents() => _domainEvents.Clear();
     }
 }

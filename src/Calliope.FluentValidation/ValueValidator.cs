@@ -22,7 +22,7 @@ namespace Calliope.FluentValidation
             });
         }
 
-        private static void HandleErrorState(ValidationFailures result, CustomContext context)
+        private static void HandleErrorState(ValidationFailed result, CustomContext context)
         {
             foreach (var message in result.ValidationMessages)
             {

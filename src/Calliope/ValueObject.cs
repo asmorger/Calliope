@@ -84,7 +84,7 @@ namespace Calliope
         public TInput Value { get; private set; } = default!;
         
         /// <summary>
-        /// Factory pattern method that validates the input and either throws a validation exception or returns the wrapped value. 
+        /// Factory pattern method that validates the input and either throws a validation exception or returns the value. 
         /// </summary>
         public static TOutput Create(TInput source)
         {
@@ -96,8 +96,26 @@ namespace Calliope
             var result = validationResult.MatchLeft();
             
             var output = Factory();
-            output.Value = result.Unwrap().GoodValue;
+            output.Value = output.Transform(result.Unwrap().Value);
             return output;
+        }
+
+        /// <summary>
+        /// Factory method that returns an <see cref="Optional"/> instance based on if the validation was successful.
+        /// </summary>
+        public static Optional<TOutput> Parse(TInput source)
+        {
+            Optional<TOutput> Success(ValidationSuccess<TInput> success)
+            {
+                var output = Factory();
+                output.Value = output.Transform(success.Value);
+                return Optional.Some(output);
+            }
+            
+            Optional<TOutput> Failure(ValidationFailed failure) => Optional<TOutput>.None;
+            
+            var validationResult = Validator.Validate(source);
+            return validationResult.Match(Success, Failure);
         }
 
         /// <inheritdoc />
@@ -120,5 +138,7 @@ namespace Calliope
         /// Takes this route over a DebuggerDisplayAttribute because they don't follow derrived types.
         /// <inheritdoc />
         public override string ToString() => Value.ToString();
+
+        protected virtual TInput Transform(TInput input) => input;
     }
 }

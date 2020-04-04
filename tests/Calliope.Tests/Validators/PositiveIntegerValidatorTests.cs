@@ -14,6 +14,6 @@ namespace Calliope.Tests.Validators
 
         [Fact]
         public void Validator_throws_exception_when_precondition_is_not_met() =>
-            Assert.IsAssignableFrom<Optional<ValidationFailures>>(_validator.Validate(-1).MatchRight());
+            Assert.IsAssignableFrom<Optional<ValidationFailed>>(_validator.Validate(-1).MatchRight());
     }
 }

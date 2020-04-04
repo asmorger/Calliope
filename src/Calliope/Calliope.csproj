@@ -7,7 +7,7 @@
         <VersionSuffix>$(VersionSuffix)</VersionSuffix>
         <Authors>Andrew Morger</Authors>
         <PackageProjectUrl>https://github.com/asmorger/Calliope</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/asmorger/Calliope/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/asmorger/Calliope</RepositoryUrl>
         <PackageTags>DDD</PackageTags>
     </PropertyGroup>

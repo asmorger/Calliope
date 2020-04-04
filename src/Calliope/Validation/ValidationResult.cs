@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Calliope.Validation
 {
-    public class ValidationFailures
+    public class ValidationFailed
     {
-        public ValidationFailures(IList<string> validationMessages)
+        public ValidationFailed(IList<string> validationMessages)
         {
             ValidationMessages = validationMessages.ToList();
         }
@@ -15,20 +15,21 @@ namespace Calliope.Validation
 
     public class ValidationSuccess<T>
     {
-        public T GoodValue { get; }
+        public T Value { get; }
 
-        public ValidationSuccess(T goodValue)
+        public ValidationSuccess(T value)
         {
-            GoodValue = goodValue;
+            Value = value;
         }
     }
     
-    public class ValidationResult<T> : Either<ValidationSuccess<T>, ValidationFailures>
+    public class ValidationResult<T> : Either<ValidationSuccess<T>, ValidationFailed>
     {
         public ValidationResult(ValidationSuccess<T> left) : base(left) { }
-        public ValidationResult(ValidationFailures right) : base(right) { }
+        public ValidationResult(ValidationFailed right) : base(right) { }
 
         public ValidationResult(IList<string> validationMessages) :
-            base(new ValidationFailures(validationMessages)) { }
+            base(new ValidationFailed(validationMessages)) { }
+        
     }
 }
