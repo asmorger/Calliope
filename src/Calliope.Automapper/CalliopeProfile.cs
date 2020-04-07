@@ -11,7 +11,7 @@ namespace Calliope.Automapper
         /// </summary>
         public CalliopeProfile()
         {
-            var valueObjectOpenGeneric = typeof(IValueObject<>);
+            var valueObjectOpenGeneric = typeof(IPrimitiveValueObject<>);
 
             var valueObjectTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.DefinedTypes)

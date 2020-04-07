@@ -1,6 +1,6 @@
 ﻿<Project>
 <PropertyGroup>
-    <Version>1.0.20</Version>
+    <Version>1.0.21</Version>
     <VersionSuffix>alpha</VersionSuffix>
     <AssemblyTitle>Calliope</AssemblyTitle>
 </PropertyGroup>

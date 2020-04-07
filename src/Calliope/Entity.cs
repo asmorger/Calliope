@@ -8,9 +8,9 @@ namespace Calliope
     public abstract class Entity
     {
         protected Entity() { }
-        protected Entity(long id) : this() => Id = id;
+        protected Entity(int id) : this() => Id = id;
 
-        public virtual long Id { get; }
+        public virtual int Id { get; }
         
         public override bool Equals(object obj)
         {

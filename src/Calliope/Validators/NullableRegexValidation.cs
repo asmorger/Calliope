@@ -5,13 +5,10 @@ using Calliope.Validation;
 
 namespace Calliope.Validators
 {
-    /// <summary>
-    /// String validator that applies a regex check against the input.
-    /// </summary>
-    public abstract class RegexValidation : Validator<string>
+    public class NullableRegexValidation: Validator<string>
     {
         protected readonly Regex Regex;
-        protected RegexValidation(string regexPattern)
+        protected NullableRegexValidation(string regexPattern)
         {
             Regex = new Regex(regexPattern);
         }
@@ -19,10 +16,15 @@ namespace Calliope.Validators
         public override IEnumerable<(Func<string, bool> rule, string error)> Rules() => 
             new (Func<string, bool> rule, string error)[]
             {
-                (string.IsNullOrEmpty, $"{Placeholder.TypeName} cannot be null or empty."),
                 (DoesNotMatchRegex, $"{Placeholder.TypeName} does not match expected format.")
             };
 
-        private bool DoesNotMatchRegex(string input) => !Regex.IsMatch(input);
+        private bool DoesNotMatchRegex(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return false;
+            
+            return !Regex.IsMatch(input);
+        }
     }
 }

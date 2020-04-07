@@ -27,6 +27,12 @@ namespace Calliope.EntityFramework.Tests
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Id);
                 e.Property(x => x.Title);
+
+                e.OwnsOne(x => x.Information, b =>
+                {
+                    b.Property(x => x.Author);
+                    b.Property(x => x.Date);
+                });
             });
             
             modelBuilder.AddValueObjectConversions();

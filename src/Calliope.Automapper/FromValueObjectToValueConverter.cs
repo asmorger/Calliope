@@ -8,7 +8,7 @@ namespace Calliope.Automapper
     /// <typeparam name="TValueObject"></typeparam>
     /// <typeparam name="TValue"></typeparam>
     public class FromValueObjectToValueConverter<TValueObject, TValue> : ITypeConverter<TValueObject, TValue>
-        where TValueObject : IValueObject<TValue>
+        where TValueObject : IPrimitiveValueObject<TValue>
     {
         public TValue Convert(TValueObject source, TValue destination, ResolutionContext context) =>
             ValueObjectFactory.FromValueObject(source);

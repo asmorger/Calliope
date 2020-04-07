@@ -7,7 +7,7 @@ namespace Calliope.FluentValidation.Tests
 {
     public class ValidatorTests
     {
-        internal class TestInteger : ValueObject<int, TestInteger, PositiveIntegerValidator>
+        internal class TestInteger : PrimitiveValueObject<int, TestInteger, PositiveIntegerValidator>
         {
         }
         

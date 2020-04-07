@@ -6,13 +6,15 @@ namespace Calliope.EntityFramework.Tests.Models
     {
         protected BlogPost() { }
 
-        public BlogPost(Title title) : this()
+        public BlogPost(Title title, PublishInformation information) : this()
         {
             Title = title;
+            Information = information;
         }
 
         public Title Title { get; }
+        public PublishInformation Information { get; }
     }
 
-    public class Title : ValueObject<string, Title, EmptyValidator<string>> { }
+    public class Title : PrimitiveValueObject<string, Title, EmptyValidator<string>> { }
 }

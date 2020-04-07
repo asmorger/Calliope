@@ -12,28 +12,6 @@ namespace Calliope.EntityFramework
 {
     public static class ModelBuilderExtensions
     {
-        private static Type GetValueObjectInterfaceType(Type type) => 
-            type.GetInterfaces()
-                .FirstOrDefault(x => x.Name == "IValueObject`1" && x.GenericTypeArguments.Length == 1);
-        
-        private static bool IsValueObject(PropertyInfo property)
-        {
-            var targetInterface = GetValueObjectInterfaceType(property.PropertyType);
-            var doesMatchInterface = targetInterface != null;
-            return doesMatchInterface;
-        }
-
-        private static Optional<Type> GetTargetFromValueObjectType(Type clrType)
-        {
-            var interfaceType = GetValueObjectInterfaceType(clrType);
-
-            if (interfaceType == null)
-                return Optional<Type>.None;
-
-            var targetClrType = interfaceType.GenericTypeArguments[0];
-            return Optional<Type>.Some(targetClrType);
-        }
-
         public static void AddValueObjectConversions(this ModelBuilder modelBuilder, bool skipConventionalEntities = true)
         {
             if (modelBuilder is null)
@@ -66,7 +44,7 @@ namespace Calliope.EntityFramework
                 property != null && ignoredMembers != null && ignoredMembers.ContainsKey(property.Name) &&
                 property.CustomAttributes.Any(a => a.AttributeType != typeof(NotMappedAttribute));
 
-            var propertiesToProcess = entityType.ClrType.GetProperties().Where(x => !IsIgnored(x) && IsValueObject(x));
+            var propertiesToProcess = entityType.ClrType.GetProperties().Where(x => !IsIgnored(x) && x.IsValueObject());
 
             foreach (var clrProperty in propertiesToProcess)
             {
@@ -80,7 +58,7 @@ namespace Calliope.EntityFramework
                 .Property(clrProperty.PropertyType, clrProperty.Name);
                     
             var valueObjectType = clrProperty.PropertyType;
-            var targetType = GetTargetFromValueObjectType(valueObjectType);
+            var targetType = valueObjectType.GetTargetFromValueObjectType();
 
             if (targetType.IsNone())
             {
