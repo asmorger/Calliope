@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -12,6 +13,25 @@ namespace Calliope.EntityFramework
 {
     public static class ModelBuilderExtensions
     {
+        public static PropertyBuilder<T> ConvertValueObject<T>(this PropertyBuilder<T> builder)
+            where T : IValueObject
+        {
+            var valueObjectType = typeof(T);
+            var targetType = valueObjectType.GetTargetFromValueObjectType();
+
+            if (targetType.IsNone())
+            {
+                return builder;
+            }
+            
+            var converterType = typeof(ValueObjectConverter<,>).MakeGenericType(valueObjectType, targetType.Unwrap());
+            var converter = (ValueConverter) Activator.CreateInstance(converterType, new object[] {null});
+
+            builder.HasConversion(converter);
+            return builder;
+        }
+        
+        /*
         public static void AddValueObjectConversions(this ModelBuilder modelBuilder, bool skipConventionalEntities = true)
         {
             if (modelBuilder is null)
@@ -22,6 +42,7 @@ namespace Calliope.EntityFramework
                 ProcessEntity(entityType, modelBuilder, skipConventionalEntities);
             }
         }
+        */
 
         private static void ProcessEntity(IMutableEntityType entityType, ModelBuilder modelBuilder, bool skipConventionalEntities)
         {
@@ -54,8 +75,12 @@ namespace Calliope.EntityFramework
 
         private static void ProcessProperty(Type clrType, PropertyInfo clrProperty, ModelBuilder modelBuilder)
         {
-            var property = modelBuilder.Entity(clrType)
-                .Property(clrProperty.PropertyType, clrProperty.Name);
+            if (clrProperty.IsValueObject() && clrProperty.PropertyType.HasNestedValueObjects())
+            {
+                return;
+            }
+            
+            var property = modelBuilder.Entity(clrType).Property(clrProperty.PropertyType, clrProperty.Name);
                     
             var valueObjectType = clrProperty.PropertyType;
             var targetType = valueObjectType.GetTargetFromValueObjectType();

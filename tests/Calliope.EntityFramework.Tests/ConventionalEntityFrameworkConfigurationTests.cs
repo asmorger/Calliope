@@ -5,12 +5,13 @@ using Xunit;
 
 namespace Calliope.EntityFramework.Tests
 {
-    public class EntityFrameworkConfigurationTests
+    /* Removing feature (for now).  Will return to it soon.
+    public class ConventionalEntityFrameworkConfigurationTests
     {
         private readonly ModelBuilder _builder;
-        public EntityFrameworkConfigurationTests()
+        public ConventionalEntityFrameworkConfigurationTests()
         {
-            var conventionSet = ConventionSet.CreateConventionSet(new TestDbContext("testdb"));
+            var conventionSet = ConventionSet.CreateConventionSet(new ConventionBasedTestDbContext("testdb"));
             _builder = new ModelBuilder(conventionSet);
         }
 
@@ -27,4 +28,5 @@ namespace Calliope.EntityFramework.Tests
             Assert.IsType<ValueObjectConverter<Title, string>>(modelProperty.GetValueConverter());
         }
     }
+    */
 }
