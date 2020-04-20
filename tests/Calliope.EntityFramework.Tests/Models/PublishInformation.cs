@@ -21,7 +21,7 @@ namespace Calliope.EntityFramework.Tests.Models
                 Author = author
             };
 
-        protected override IEnumerable<object?> GetEqualityComponents()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Date.Value;
             yield return Author.Value;

@@ -1,6 +1,9 @@
+using System.Linq;
 using Calliope.Validators;
 using FluentValidation;
+using FluentValidation.Internal;
 using FluentValidation.TestHelper;
+using FluentValidation.Validators;
 using Xunit;
 
 namespace Calliope.FluentValidation.Tests
@@ -15,7 +18,7 @@ namespace Calliope.FluentValidation.Tests
         {
             internal TestRequestValidator()
             {
-                RuleFor(x => x.Value).TargetingValue(TestInteger.Validator);
+                RuleFor(x => x.Value).ValidFor(TestInteger.Validator);
             }
         }
 
@@ -25,33 +28,37 @@ namespace Calliope.FluentValidation.Tests
         }
         
         [Fact]
-        public void Validator_can_be_created() => Assert.NotNull(new ValueValidator<int>(TestInteger.Validator));
+        public void Validator_can_be_created() => Assert.NotNull(new ValueForValidator<int>(TestInteger.Validator));
 
         [Fact]
         public void Valdiator_succeeds_when_item_is_valid()
         {
-            var validator = new ValueValidator<int>(TestInteger.Validator);
-            var result = validator.Validate(42);
+            var instance = new TestRequest {Value = 42};
+            var validator = new ValueForValidator<int>(TestInteger.Validator);
             
-            Assert.True(result.IsValid);
-        }
-        
-        [Fact]
-        public void Valdiator_fails_when_item_is_invalid()
-        {
-            var validator = new ValueValidator<int>(TestInteger.Validator);
-            var result = validator.Validate(-42);
+            var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
+            var context = new ValidationContext(instance, new PropertyChain(), selector);
+            var propertyValidatorContext = new PropertyValidatorContext(context, PropertyRule.Create<TestRequest,int>(t => t.Value), nameof(TestRequest.Value));
             
-            Assert.False(result.IsValid);
+            var result = validator.Validate(propertyValidatorContext).ToList();
+
+            Assert.Empty(result);
         }
-        
+
         [Fact]
         public void Valdiator_sets_proper_validation_message_when_item_is_invalid()
         {
-            var validator = new ValueValidator<int>(TestInteger.Validator);
-            var result = validator.Validate(-42);
+            var instance = new TestRequest {Value = -42};
+            var validator = new ValueForValidator<int>(TestInteger.Validator);
+            
+            var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
+            var context = new ValidationContext(instance, new PropertyChain(), selector);
+            var propertyValidatorContext = new PropertyValidatorContext(context, PropertyRule.Create<TestRequest,int>(t => t.Value), nameof(TestRequest.Value));
+            
+            var result = validator.Validate(propertyValidatorContext).ToList();
 
-            Assert.Equal("{PropertyName} must be above zero", result.Errors[0].ErrorMessage);
+            Assert.NotEmpty(result);
+            Assert.Equal("Value must be above zero", result.First().ErrorMessage);
         }
         
         [Fact]

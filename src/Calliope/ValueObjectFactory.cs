@@ -7,8 +7,11 @@ namespace Calliope
     {
         public static TOutput FromValueObject<TOutput>(IPrimitiveValueObject<TOutput> primitiveValueObject) => primitiveValueObject.Value;
 
-        public static object FromValue<TOutput>(TOutput target, Type type) =>
-            type.InvokeMember("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                null, new object[] { target });
+
+        public static object FromValue<TSource>(TSource source, Type type)
+        {
+            var method = type.GetMethod("Create", BindingFlags.Public | BindingFlags.Static);
+            return method?.Invoke(null, new object[] {source});
+        }
     }
 }

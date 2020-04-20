@@ -24,6 +24,9 @@ namespace Calliope
             return false;
         }
 
+        public static bool IsPrimitiveValueObject(this Type type) =>
+            ImplementsGenericInterface(type, PrimitiveValueObjectMarkerInterface) && !type.IsAbstract;
+
         public static bool IsPrimitiveValueObject(this PropertyInfo i) => ImplementsPrimitiveValueObject(i.PropertyType);
 
         private static bool ImplementsPrimitiveValueObject(Type typeToCheck) => 
@@ -54,8 +57,10 @@ namespace Calliope
             
             if(@interface == null)
                 return Optional<Type>.None;
+
+            var output = @interface.GetGenericArguments()[0];
             
-            return Optional.Some(@interface.GetGenericArguments()[0]);
+            return Optional.Some(output);
         }
 
         public static Optional<Type> GetTargetFromValueObjectType(this Type clrType)

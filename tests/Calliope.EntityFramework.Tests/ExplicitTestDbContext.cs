@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Calliope.EntityFramework.Tests
 {
-    public class ExplictTestDbContext : DbContext
+    public class ExplicitTestDbContext : DbContext
     {
         private readonly string _databaseName;
 
-        public ExplictTestDbContext(string databaseName)
+        public ExplicitTestDbContext(string databaseName)
         {
             _databaseName = databaseName;
         }
@@ -24,17 +24,6 @@ namespace Calliope.EntityFramework.Tests
             modelBuilder.Entity<BlogPost>(e =>
             {
                 e.HasKey(x => x.Id);
-                
-                /*
-                e.Property(x => x.Id);
-                e.Property(x => x.Title).AsValueObject();
-
-                e.OwnsOne(x => x.Information, b =>
-                {
-                    b.Property(x => x.Author).AsValueObject();
-                    b.Property(x => x.Date).AsValueObject();
-                });
-                */
             });
         }
     }
