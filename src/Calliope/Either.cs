@@ -3,8 +3,6 @@ using System;
 namespace Calliope
 {
     public class Either<TLeft, TRight>
-        where TLeft : notnull
-        where TRight: notnull
     {
         private readonly Optional<TLeft> _left;
         private readonly Optional<TRight> _right;
@@ -30,7 +28,7 @@ namespace Calliope
             throw new ArgumentException("Neither left nor right is set.");
         }
 
-        public Optional<TLeft> MatchLeft(Func<TLeft, TLeft>? leftFunc = null)
+        public Optional<TLeft> MatchLeft(Func<TLeft, TLeft> leftFunc = null)
         {
             if (_left.IsSome(out var left))
             {
@@ -45,13 +43,13 @@ namespace Calliope
             return Optional<TLeft>.None;
         }
         
-        public Optional<T> MatchLeft<T>(Func<TLeft, T> leftFunc) where T : notnull
+        public Optional<T> MatchLeft<T>(Func<TLeft, T> leftFunc)
         {
             if (_left.IsSome(out var left)) return leftFunc(left);
             return Optional<T>.None;
         }
 
-        public Optional<TRight> MatchRight(Func<TRight, TRight>? rightFunc = null)
+        public Optional<TRight> MatchRight(Func<TRight, TRight> rightFunc = null)
         {
             if (_right.IsSome(out var right))
             {
@@ -66,7 +64,7 @@ namespace Calliope
             return Optional<TRight>.None;
         }
         
-        public Optional<T> MatchRight<T>(Func<TRight, T> rightFunc) where T : notnull
+        public Optional<T> MatchRight<T>(Func<TRight, T> rightFunc)
         {
             if (_right.IsSome(out var right)) return rightFunc(right);
             return Optional<T>.None;

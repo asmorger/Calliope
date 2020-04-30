@@ -7,7 +7,7 @@ namespace Calliope
 
     public abstract class ValueObject<T> : IValueObject
     {
-        protected abstract IEnumerable<object?> GetEqualityComponents();
+        protected abstract IEnumerable<object> GetEqualityComponents();
 
         public override bool Equals(object obj)
         {

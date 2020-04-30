@@ -10,8 +10,6 @@ namespace Calliope
         IStructuralEquatable,
         IComparable, 
         IStructuralComparable
-        
-        where TValue : notnull
     {
         public static Optional<TValue> None => default;
 
@@ -108,13 +106,13 @@ namespace Calliope
 
     public static class Optional
     {
-        public static Optional<TValue> None<TValue>() where TValue : notnull =>
+        public static Optional<TValue> None<TValue>() =>
             Optional<TValue>.None;
 
-        public static Optional<TValue> Some<TValue>(TValue value) where TValue : notnull =>
+        public static Optional<TValue> Some<TValue>(TValue value) =>
             Optional<TValue>.Some(value);
 
-        public static Optional<TValue> Create<TValue>(TValue? value) where TValue : class =>
+        public static Optional<TValue> Create<TValue>(TValue value) where TValue : class =>
             value is { } some ? Some(some) : None<TValue>();
 
         public static Optional<TValue> Create<TValue>(TValue? value) where TValue : struct =>

@@ -26,10 +26,10 @@ namespace Calliope.Validators
                 (IsMoreThanMaximumLength, $"{Placeholder.TypeName} is more than maximum length")
             };
 
-        private bool IsLessToMinimumLength(string? input) =>
+        private bool IsLessToMinimumLength(string input) =>
             _minimumLength.IsSome() && input?.Length < _minimumLength.Unwrap();
 
-        private bool IsMoreThanMaximumLength(string? input) =>
+        private bool IsMoreThanMaximumLength(string input) =>
             _maximumLength.IsSome() && input?.Length > _maximumLength.Unwrap();
     }
 }
