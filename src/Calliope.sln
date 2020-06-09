@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope", "Calliope\Calliope.csproj", "{9CBFA2C4-6A87-43CF-8D06-06D82BCEFE1D}"
 EndProject
@@ -9,10 +9,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F82149C8-C989-4538-A0EE-23EC3CAAF90A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.FluentValidation.Tests", "..\tests\Calliope.FluentValidation.Tests\Calliope.FluentValidation.Tests.csproj", "{4BFB40DF-D675-4F50-9F2D-8C88EE873B97}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.Automapper", "Calliope.Automapper\Calliope.Automapper.csproj", "{861F4EC6-29A9-43AA-ADB5-6C413E4EB7D4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.Automapper.Tests", "..\tests\Calliope.Automapper.Tests\Calliope.Automapper.Tests.csproj", "{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.EntityFramework", "Calliope.EntityFramework\Calliope.EntityFramework.csproj", "{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}"
 EndProject
@@ -40,14 +36,6 @@ Global
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{861F4EC6-29A9-43AA-ADB5-6C413E4EB7D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{861F4EC6-29A9-43AA-ADB5-6C413E4EB7D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{861F4EC6-29A9-43AA-ADB5-6C413E4EB7D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{861F4EC6-29A9-43AA-ADB5-6C413E4EB7D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3D2B092-09EF-4EB6-BCCA-DAF53338EEA5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7116B09E-3A24-4FD5-B1BF-E86FB877A7E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
