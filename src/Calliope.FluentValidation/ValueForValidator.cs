@@ -18,13 +18,12 @@ namespace Calliope.FluentValidation
             var item = (TSource) context.PropertyValue;
             var result = _validator.Validate(item);
 
-            var errors = result.MatchRight();
-
-            if (errors.IsSome())
+            if (result.IsError(out var domainException))
             {
-                foreach (var message in errors.Unwrap().ValidationMessages)
-                    context.MessageFormatter.AppendArgument("ValidationMessage",
-                        message.Replace(Placeholder.TypeName, "{PropertyName}"));
+                if (domainException is ValidationFailedException validationFailed)
+                    foreach (var message in validationFailed.Messages)
+                        context.MessageFormatter.AppendArgument("ValidationMessage",
+                            message.Replace(Placeholder.TypeName, "{PropertyName}"));
 
                 return false;
             }

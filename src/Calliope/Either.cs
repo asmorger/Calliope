@@ -4,18 +4,18 @@ namespace Calliope
 {
     public class Either<TLeft, TRight>
     {
-        private readonly Optional<TLeft> _left;
-        private readonly Optional<TRight> _right;
+        private readonly Option<TLeft> _left;
+        private readonly Option<TRight> _right;
 
         public Either(TLeft left)
         {
             _left = left;
-            _right = Optional<TRight>.None;
+            _right = Option<TRight>.None;
         }
 
         public Either(TRight right)
         {
-            _left = Optional<TLeft>.None;
+            _left = Option<TLeft>.None;
             _right = right;
         }
 
@@ -28,7 +28,7 @@ namespace Calliope
             throw new ArgumentException("Neither left nor right is set.");
         }
 
-        public Optional<TLeft> MatchLeft(Func<TLeft, TLeft> leftFunc = null)
+        public Option<TLeft> MatchLeft(Func<TLeft, TLeft> leftFunc = null)
         {
             if (_left.IsSome(out var left))
             {
@@ -40,16 +40,16 @@ namespace Calliope
                 return left;
             }
             
-            return Optional<TLeft>.None;
+            return Option<TLeft>.None;
         }
         
-        public Optional<T> MatchLeft<T>(Func<TLeft, T> leftFunc)
+        public Option<T> MatchLeft<T>(Func<TLeft, T> leftFunc)
         {
             if (_left.IsSome(out var left)) return leftFunc(left);
-            return Optional<T>.None;
+            return Option<T>.None;
         }
 
-        public Optional<TRight> MatchRight(Func<TRight, TRight> rightFunc = null)
+        public Option<TRight> MatchRight(Func<TRight, TRight> rightFunc = null)
         {
             if (_right.IsSome(out var right))
             {
@@ -61,13 +61,13 @@ namespace Calliope
                 return right;
             }
             
-            return Optional<TRight>.None;
+            return Option<TRight>.None;
         }
         
-        public Optional<T> MatchRight<T>(Func<TRight, T> rightFunc)
+        public Option<T> MatchRight<T>(Func<TRight, T> rightFunc)
         {
             if (_right.IsSome(out var right)) return rightFunc(right);
-            return Optional<T>.None;
+            return Option<T>.None;
         }
         
         public void DoRight(Action<TRight> rightAction)

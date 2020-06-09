@@ -1,6 +1,6 @@
 namespace Calliope
 {
-    public interface IDomainEvent
+    public interface DomainEvent
     {
         
     }

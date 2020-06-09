@@ -16,19 +16,19 @@ namespace Calliope.Tests.Validators
 
         [Fact]
         public void Validator_fails_when_string_is_null() =>
-            Assert.IsAssignableFrom<Optional<ValidationFailed>>(_validator.Validate(null).MatchRight());
+            Assert.IsAssignableFrom<Option<ValidationFailedException>>(_validator.Validate(null).MatchRight());
         
         [Fact]
         public void Validator_fails_when_string_has_too_few_characters() =>
-            Assert.IsAssignableFrom<Optional<ValidationFailed>>(_validator.Validate("").MatchRight());
+            Assert.IsAssignableFrom<Option<ValidationFailedException>>(_validator.Validate("").MatchRight());
         
         [Fact]
         public void Validator_fails_when_string_has_too_many_characters() =>
-            Assert.IsAssignableFrom<Optional<ValidationFailed>>(
+            Assert.IsAssignableFrom<Option<ValidationFailedException>>(
                 _validator.Validate(new string(Enumerable.Repeat('a', 150).ToArray())).MatchRight());
         
         [Fact]
         public void Validator_succeeds_when_string_is_valid() =>
-            Assert.IsAssignableFrom<Optional<ValidationSuccess<string>>>(_validator.Validate("Engage").MatchLeft());
+            Assert.IsAssignableFrom<Option<Result<string>>>(_validator.Validate("Engage").MatchLeft());
     }
 }

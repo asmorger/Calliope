@@ -9,10 +9,10 @@ namespace Calliope.Validators
     /// </summary>
     public class NotEmptyStringValidator : Validator<string>
     {
-        private readonly Optional<int> _minimumLength;
-        private readonly Optional<int> _maximumLength;
+        private readonly Option<int> _minimumLength;
+        private readonly Option<int> _maximumLength;
 
-        public NotEmptyStringValidator(Optional<int> minimumLength, Optional<int> maximumLength)
+        public NotEmptyStringValidator(Option<int> minimumLength, Option<int> maximumLength)
         {
             _minimumLength = minimumLength;
             _maximumLength = maximumLength;

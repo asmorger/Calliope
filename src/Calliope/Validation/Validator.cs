@@ -6,13 +6,13 @@ namespace Calliope.Validation
 {
     public interface IValidator<TInput>
     {
-        ValidationResult<TInput> Validate(TInput source);
+        Result<TInput> Validate(TInput source);
         IEnumerable<(Func<TInput, bool> rule, string error)> Rules();
     }
 
     public abstract class Validator<TInput> : IValidator<TInput>
     {
-        public ValidationResult<TInput> Validate(TInput source)
+        public Result<TInput> Validate(TInput source)
         {
             var failures = new List<string>();
 
@@ -26,9 +26,9 @@ namespace Calliope.Validation
                 }
             }
             
-            if(failures.Any()) return new ValidationResult<TInput>(failures);
-            
-            return new ValidationResult<TInput>(new ValidationSuccess<TInput>(source));
+            if(failures.Any()) Result<TInput>.Error(new ValidationFailedException(typeof(TInput).Namespace, failures));
+
+            return Result<TInput>.Ok(source);
         }
 
         public abstract IEnumerable<(Func<TInput, bool> rule, string error)> Rules();

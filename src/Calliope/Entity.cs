@@ -10,7 +10,7 @@ namespace Calliope
         protected Entity() { }
         protected Entity(int id) : this() => Id = id;
 
-        public virtual int Id { get; }
+        public virtual int Id { get; private set; }
         
         public override bool Equals(object obj)
         {

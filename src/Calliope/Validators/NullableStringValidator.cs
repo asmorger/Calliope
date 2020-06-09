@@ -9,25 +9,18 @@ namespace Calliope.Validators
     /// </summary>
     public class NullableStringValidator : Validator<string>
     {
-        private readonly Optional<int> _minimumLength;
-        private readonly Optional<int> _maximumLength;
-        
-        public NullableStringValidator(Optional<int> minimumLength, Optional<int> maximumLength)
+        private readonly Option<int> _maxLength;
+
+        protected NullableStringValidator(Option<int> maxLength)
         {
-            _minimumLength = minimumLength;
-            _maximumLength = maximumLength;
+            _maxLength = maxLength;
         }
-        public override IEnumerable<(Func<string, bool> rule, string error)> Rules() => 
+        public override IEnumerable<(Func<string, bool> rule, string error)> Rules() =>
             new (Func<string, bool> rule, string error)[]
             {
-                (IsLessToMinimumLength, $"{Placeholder.TypeName} is less than the minimum length"),
-                (IsMoreThanMaximumLength, $"{Placeholder.TypeName} is more than maximum length")
+                (StringExceedsMaxLength, $"{Placeholder.TypeName} is too long.")
             };
 
-        private bool IsLessToMinimumLength(string input) =>
-            _minimumLength.IsSome() && input?.Length < _minimumLength.Unwrap();
-
-        private bool IsMoreThanMaximumLength(string input) =>
-            _maximumLength.IsSome() && input?.Length > _maximumLength.Unwrap();
+        private bool StringExceedsMaxLength(string input) => input?.Length > _maxLength;
     }
 }

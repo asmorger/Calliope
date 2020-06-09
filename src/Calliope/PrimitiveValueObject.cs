@@ -43,28 +43,28 @@ namespace Calliope
             var validationResult = Validator.Validate(source);
 
             // this will kick it out if it's not valid
-            validationResult.DoRight(err => throw new ValidationFailedException(typeof(TOutput).Name, err));
+            validationResult.DoRight(err => throw err);
 
             var result = validationResult.MatchLeft();
 
             var output = Factory();
-            output.Value = output.Transform(result.Unwrap().Value);
+            output.Value = output.Transform(result.Unwrap());
             return output;
         }
 
         /// <summary>
         /// Factory method that returns an <see cref="Optional"/> instance based on if the validation was successful.
         /// </summary>
-        public static Optional<TOutput> Parse(TInput source)
+        public static Option<TOutput> Parse(TInput source)
         {
-            Optional<TOutput> Success(ValidationSuccess<TInput> success)
+            Option<TOutput> Success(TInput success)
             {
                 var output = Factory();
-                output.Value = output.Transform(success.Value);
+                output.Value = output.Transform(success);
                 return Optional.Some(output);
             }
 
-            Optional<TOutput> Failure(ValidationFailed failure) => Optional<TOutput>.None;
+            Option<TOutput> Failure(DomainException failure) => Option<TOutput>.None;
 
             var validationResult = Validator.Validate(source);
             return validationResult.Match(Success, Failure);
