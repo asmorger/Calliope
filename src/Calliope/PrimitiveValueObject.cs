@@ -42,13 +42,11 @@ namespace Calliope
         {
             var validationResult = Validator.Validate(source);
 
-            // this will kick it out if it's not valid
-            validationResult.DoRight(err => throw err);
-
-            var result = validationResult.MatchLeft();
+            if (validationResult.IsError(out var validationException))
+                throw validationException;
 
             var output = Factory();
-            output.Value = output.Transform(result.Unwrap());
+            output.Value = output.Transform(source);
             return output;
         }
 
@@ -57,10 +55,10 @@ namespace Calliope
         /// </summary>
         public static Option<TOutput> Parse(TInput source)
         {
-            Option<TOutput> Success(TInput success)
+            Option<TOutput> Success(bool _)
             {
                 var output = Factory();
-                output.Value = output.Transform(success);
+                output.Value = output.Transform(source);
                 return Optional.Some(output);
             }
 

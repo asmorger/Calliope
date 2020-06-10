@@ -12,17 +12,17 @@ namespace Calliope.Tests.Validators
         {
             _validator = new EmptyValidator<string>();
         }
-        
+
         [Fact]
         public void Validator_passes_null_values() =>
-            Assert.IsAssignableFrom<Option<Result<string>>>(_validator.Validate(null).MatchLeft());
+            Assert.True(_validator.Validate(null).IsOk());
 
         [Fact]
         public void Validator_passes_string_empty_values() =>
-            Assert.IsAssignableFrom<Option<Result<string>>>(_validator.Validate(string.Empty).MatchLeft());
+            Assert.True(_validator.Validate(string.Empty).IsOk());
         
         [Fact]
         public void Validator_passes_string_large_length_values() =>
-            Assert.IsAssignableFrom<Option<Result<string>>>(_validator.Validate(new string(Enumerable.Repeat('a', 10000).ToArray())).MatchLeft());
+            Assert.True(_validator.Validate(new string(Enumerable.Repeat('a', 10000).ToArray())).IsOk());
     }
 }
