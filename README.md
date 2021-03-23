@@ -12,6 +12,10 @@ Calliope is a small set of opinionated DDD Seedwork classes that helps enable du
 
 Previously I included `Entity Framework` and `Automapper` integration, however after using them I have actually fully removed them.  They proved too "magical" caused too much confusion when debugging needed to occur.  Integrating with these services by hand has not been a burden and has brought much clarity to my codebase.
 
+## Integration Paradigms
+
+While I initially built this library as a drop-in value add to an other projects, after using it like that my team and I found it unwieldy.  It felt strange to build core concepts off of non-standard namespaces and we ended up using this as inspiration and hand-copying them into our own `Seedwork` libraries for the comfort of an internal namespace.  I would recommend that you do something similar, if you choose to use any of these implementations.
+
 ## Overview
 
 ### Value Object
