@@ -27,7 +27,7 @@ namespace Calliope.Validation
             }
             
             if(failures.Any()) 
-                return Result<bool>.Error(new ValidationFailedException(failures));
+                return Result<bool>.Error(new ValidationFailed(failures));
 
             return Result<bool>.Ok(true);
         }

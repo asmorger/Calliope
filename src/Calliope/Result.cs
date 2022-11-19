@@ -2,21 +2,21 @@ using System;
 
 namespace Calliope
 {
-    public class Result<TSuccess> : Either<TSuccess, DomainException>
+    public class Result<TSuccess> : Either<TSuccess, DomainError>
         where TSuccess : notnull
     {
         private Result(TSuccess success) : base(success)
         {
         }
 
-        private Result(DomainException domainException) : base(domainException)
+        private Result(DomainError domainException) : base(domainException)
         {
         }
 
-        public T HandleSuccessOrError<T>(Func<TSuccess, T> successHandler, Func<DomainException, T> errorHandler) =>
+        public T HandleSuccessOrError<T>(Func<TSuccess, T> successHandler, Func<DomainError, T> errorHandler) =>
             Match(successHandler, errorHandler);
 
-        public void HandleError(Action<DomainException> domainExceptionAction) => DoRight(domainExceptionAction);
+        public void HandleError(Action<DomainError> domainExceptionAction) => DoRight(domainExceptionAction);
 
         public bool IsOk() => base.MatchLeft(x => x).IsSome();
         public bool IsError() => base.MatchRight(x => x).IsSome();
@@ -35,7 +35,7 @@ namespace Calliope
             return false;
         }
 
-        public bool IsError(out DomainException domainException)
+        public bool IsError(out DomainError domainException)
         {
             var source = base.MatchRight(x => x);
 
@@ -52,6 +52,6 @@ namespace Calliope
         public TSuccess Unwrap() => base.MatchLeft(x => x).Unwrap();
 
         public static Result<TSuccess> Ok(TSuccess successValue) => new Result<TSuccess>(successValue);
-        public static Result<TSuccess> Error(DomainException domainException) => new Result<TSuccess>(domainException);
+        public static Result<TSuccess> Error(DomainError domainException) => new Result<TSuccess>(domainException);
     }
 }

@@ -43,7 +43,7 @@ namespace Calliope
             var validationResult = Validator.Validate(source);
 
             if (validationResult.IsError(out var validationException))
-                throw validationException;
+                throw new Exception(validationException.ToErrorMessage());
 
             var output = Factory();
             output.Value = output.Transform(source);
@@ -62,7 +62,7 @@ namespace Calliope
                 return Optional.Some(output);
             }
 
-            Option<TOutput> Failure(DomainException failure) => Option<TOutput>.None;
+            Option<TOutput> Failure(DomainError failure) => Option<TOutput>.None;
 
             var validationResult = Validator.Validate(source);
             return validationResult.Match(Success, Failure);

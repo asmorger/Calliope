@@ -20,7 +20,7 @@ namespace Calliope.FluentValidation
 
             if (result.IsError(out var domainException))
             {
-                if (domainException is ValidationFailedException validationFailed)
+                if (domainException is ValidationFailed validationFailed)
                     foreach (var message in validationFailed.Messages)
                         context.MessageFormatter.AppendArgument("ValidationMessage",
                             message.Replace(Placeholder.TypeName, "{PropertyName}"));

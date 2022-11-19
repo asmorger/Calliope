@@ -1,22 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace Calliope
 {
-    public abstract class DomainException : Exception
+    public interface DomainError
     {
-        protected DomainException()
-        {
+        public List<string> Messages { get; }
 
-        }
-        
-        protected DomainException(string message) : base(message)
-        {
-
-        }
-
-        protected DomainException(string message, Exception innerException) : base(message, innerException)
-        {
-
-        }
+        public abstract string ToErrorMessage();
     }
 }
