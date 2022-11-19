@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
         <VersionSuffix>$(VersionSuffix)</VersionSuffix>
-        <Authors>Andrew Morger</Authors>
         <PackageProjectUrl>https://github.com/asmorger/Calliope</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/asmorger/Calliope</RepositoryUrl>

@@ -1,0 +1,17 @@
+<Project>
+
+    <PropertyGroup>
+        <Authors>Andrew Morger</Authors>
+        <Version>1.0.27</Version>
+        <VersionSuffix>beta</VersionSuffix>
+        <AssemblyTitle>Calliope</AssemblyTitle>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>disable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsNotAsErrors>618</WarningsNotAsErrors>
+    </PropertyGroup>
+</Project>
