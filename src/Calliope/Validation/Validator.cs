@@ -4,12 +4,7 @@ using static Calliope.ResultExtensions;
 
 namespace Calliope.Validation
 {
-    public interface IValidator<TInput>
-    {
-        Result<bool> Validate(TInput source, IEnumerable<ValidationRule<TInput>> rules);
-    }
-
-    public class Validator<TInput> : IValidator<TInput>
+    public class Validator<TInput>
     {
         public Result<bool> Validate(TInput source, IEnumerable<ValidationRule<TInput>> rules)
         {
