@@ -12,7 +12,7 @@ namespace Calliope
         TEntity Value { get; }
     }
     
-    public abstract class PrimitiveValueObject<TInput, TOutput, TValidator> : ValueObject<TOutput>, IPrimitiveValueObject<TInput>
+    public abstract class PrimitiveValueObject<TInput, TOutput, TValidator> : OldValueObject<TOutput>, IPrimitiveValueObject<TInput>
         where TOutput : PrimitiveValueObject<TInput, TOutput, TValidator>
         where TValidator : IValidator<TInput>, new()
     {
@@ -66,12 +66,6 @@ namespace Calliope
 
             var validationResult = Validator.Validate(source);
             return validationResult.Match(Success, Failure);
-        }
-
-        /// <inheritdoc />
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Value;
         }
 
         /// <summary>
