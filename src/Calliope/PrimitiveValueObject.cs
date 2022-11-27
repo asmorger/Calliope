@@ -35,39 +35,7 @@ namespace Calliope
         // default value suppresses the C# 8 nullable warning
         public TInput Value { get; private set; } = default!;
 
-        /// <summary>
-        /// Factory pattern method that validates the input and either throws a validation exception or returns the value. 
-        /// </summary>
-        public static TOutput Create(TInput source)
-        {
-            var validationResult = Validator.Validate(source);
-
-            if (validationResult.IsError(out var validationException))
-                throw new Exception(validationException.ToErrorMessage());
-
-            var output = Factory();
-            output.Value = output.Transform(source);
-            return output;
-        }
-
-        /// <summary>
-        /// Factory method that returns an <see cref="Optional"/> instance based on if the validation was successful.
-        /// </summary>
-        public static Option<TOutput> Parse(TInput source)
-        {
-            Option<TOutput> Success(bool _)
-            {
-                var output = Factory();
-                output.Value = output.Transform(source);
-                return Optional.Some(output);
-            }
-
-            Option<TOutput> Failure(DomainError failure) => Option<TOutput>.None;
-
-            var validationResult = Validator.Validate(source);
-            return validationResult.Match(Success, Failure);
-        }
-
+        
         /// <summary>
         /// Casts the current Value type to that of it's property
         /// </summary>

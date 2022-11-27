@@ -1,4 +1,4 @@
-namespace Calliope.Validators
+namespace Calliope.Validation
 {
     public static class Placeholder
     {

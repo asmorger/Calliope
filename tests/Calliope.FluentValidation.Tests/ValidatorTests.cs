@@ -1,5 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
-using Calliope.Validators;
+using Calliope.Validation;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.TestHelper;
@@ -10,15 +11,19 @@ namespace Calliope.FluentValidation.Tests
 {
     public class ValidatorTests
     {
-        internal class TestInteger : PrimitiveValueObject<int, TestInteger, PositiveIntegerValidator>
+        private record TestInteger(int Value) : IValidatable<int>
         {
+            public static IEnumerable<ValidationRule<int>> GetValidationRules() => new []
+            {
+                new IntValidators.GreaterThanZero()
+            };
         }
-        
-        internal class TestRequestValidator : AbstractValidator<TestRequest>
+
+        private class TestRequestValidator : AbstractValidator<TestRequest>
         {
             internal TestRequestValidator()
             {
-                RuleFor(x => x.Value).ValidFor(TestInteger.Validator);
+                RuleFor(x => x.Value).ValidFor<TestRequest, int, TestInteger>();
             }
         }
 
@@ -28,13 +33,13 @@ namespace Calliope.FluentValidation.Tests
         }
         
         [Fact]
-        public void Validator_can_be_created() => Assert.NotNull(new ValueForValidator<int>(TestInteger.Validator));
+        public void Validator_can_be_created() => Assert.NotNull(new ValueForValidator<int>(TestInteger.GetValidationRules()));
 
         [Fact]
         public void Valdiator_succeeds_when_item_is_valid()
         {
             var instance = new TestRequest {Value = 42};
-            var validator = new ValueForValidator<int>(TestInteger.Validator);
+            var validator = new ValueForValidator<int>(TestInteger.GetValidationRules());
             
             var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
             var context = new ValidationContext(instance, new PropertyChain(), selector);
@@ -49,7 +54,7 @@ namespace Calliope.FluentValidation.Tests
         public void Valdiator_sets_proper_validation_message_when_item_is_invalid()
         {
             var instance = new TestRequest {Value = -42};
-            var validator = new ValueForValidator<int>(TestInteger.Validator);
+            var validator = new ValueForValidator<int>(TestInteger.GetValidationRules());
             
             var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
             var context = new ValidationContext(instance, new PropertyChain(), selector);
@@ -58,7 +63,7 @@ namespace Calliope.FluentValidation.Tests
             var result = validator.Validate(propertyValidatorContext).ToList();
 
             Assert.NotEmpty(result);
-            Assert.Equal("Value must be above zero", result.First().ErrorMessage);
+            Assert.Equal("-42 must be greater than 0", result.First().ErrorMessage);
         }
         
         [Fact]
