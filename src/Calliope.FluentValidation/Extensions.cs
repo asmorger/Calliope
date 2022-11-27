@@ -12,7 +12,7 @@ namespace Calliope.FluentValidation
             where TValueObject : IValidatable<TProperty>
         {
             var method = typeof(TValueObject).GetMethod(nameof(IValidatable<TProperty>.GetValidationRules), BindingFlags.Public | BindingFlags.Static);
-            var rules = (IEnumerable<ValidationRule<TProperty>>) method!.Invoke(null, null);
+            var rules = (IEnumerable<ValidationRule<TProperty>>) method!.Invoke(null, null)!;
             
             return ruleBuilder.SetValidator(new ValueForValidator<TProperty>(rules));
         }

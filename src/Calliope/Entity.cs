@@ -8,11 +8,14 @@ namespace Calliope
     public abstract class Entity
     {
         protected Entity() { }
-        protected Entity(int id) : this() => Id = id;
+        protected Entity(int id) : this()
+        {
+            Id = id;
+        }
 
         public virtual int Id { get; private set; }
         
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is Entity other))
                 return false;
@@ -29,7 +32,7 @@ namespace Calliope
             return Id == other.Id;
         }
 
-        public static bool operator ==(Entity a, Entity b)
+        public static bool operator ==(Entity? a, Entity? b)
         {
             if (a is null && b is null)
                 return true;
@@ -42,6 +45,7 @@ namespace Calliope
 
         public static bool operator !=(Entity a, Entity b) => !(a == b);
 
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
         public override int GetHashCode() => (GetRealType().ToString() + Id).GetHashCode();
 
         private Type GetRealType()
@@ -49,7 +53,7 @@ namespace Calliope
             var type = GetType();
 
             if (type.ToString().Contains("Castle.Proxies."))
-                return type.BaseType;
+                return type.BaseType!;
 
             return type;
         }
