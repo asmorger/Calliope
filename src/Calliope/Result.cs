@@ -1,57 +1,39 @@
-using System;
+ #nullable enable
+ using System;
+ using System.Diagnostics.CodeAnalysis;
 
-namespace Calliope
+ namespace Calliope
 {
-    public class Result<TSuccess> : Either<TSuccess, DomainError>
-        where TSuccess : notnull
+    public record Result<T>
     {
-        private Result(TSuccess success) : base(success)
-        {
-        }
+        public record Success(T Value) : Result<T>;
 
-        private Result(DomainError domainException) : base(domainException)
-        {
-        }
+        public record Failure(DomainError Error) : Result<T>;
+        
+        private Result() { }
 
-        public T HandleSuccessOrError<T>(Func<TSuccess, T> successHandler, Func<DomainError, T> errorHandler) =>
-            Match(successHandler, errorHandler);
-
-        public void HandleError(Action<DomainError> domainExceptionAction) => DoRight(domainExceptionAction);
-
-        public bool IsOk() => base.MatchLeft(x => x).IsSome();
-        public bool IsError() => base.MatchRight(x => x).IsSome();
-
-        public bool IsOk(out TSuccess result)
-        {
-            var source = base.MatchLeft(x => x);
-
-            if (source.IsSome(out var sourceOk))
+        public TOutput Match<TOutput>(Func<T, TOutput> onSuccess,
+            Func<DomainError, TOutput> onFailure) =>
+            this switch
             {
-                result = sourceOk;
+                Failure failure => onFailure(failure.Error),
+                Success success => onSuccess(success.Value),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+        public bool IsError([NotNullWhen(true)] out DomainError? error)
+        {
+            if (this is Failure failure)
+            {
+                error = failure.Error;
                 return true;
             }
 
-            result = default!;
+            error = null;
             return false;
         }
 
-        public bool IsError(out DomainError domainException)
-        {
-            var source = base.MatchRight(x => x);
-
-            if (source.IsSome(out var sourceException))
-            {
-                domainException = sourceException;
-                return true;
-            }
-
-            domainException = null;
-            return false;
-        }
-
-        public TSuccess Unwrap() => base.MatchLeft(x => x).Unwrap();
-
-        public static Result<TSuccess> Ok(TSuccess successValue) => new Result<TSuccess>(successValue);
-        public static Result<TSuccess> Error(DomainError domainException) => new Result<TSuccess>(domainException);
+        public bool IsError() => this is Failure;
+        public bool IsOk() => this is Success;
     }
 }

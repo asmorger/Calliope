@@ -1,5 +1,4 @@
 using System.Linq;
-using Calliope.Validation;
 using Calliope.Validators;
 using Xunit;
 

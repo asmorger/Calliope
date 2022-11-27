@@ -27,9 +27,9 @@ namespace Calliope.Validation
             }
             
             if(failures.Any()) 
-                return Result<bool>.Error(new ValidationFailed(failures));
+                return new Result<bool>.Failure(new ValidationFailed(failures));
 
-            return Result<bool>.Ok(true);
+            return new Result<bool>.Success(true);
         }
 
         public abstract IEnumerable<(Func<TInput, bool> rule, string error)> Rules();
