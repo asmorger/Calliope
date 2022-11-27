@@ -36,4 +36,10 @@
         public bool IsError() => this is Failure;
         public bool IsOk() => this is Success;
     }
+
+    public static class ResultExtensions
+    {
+        public static Result<T> Ok<T>(T value) => new Result<T>.Success(value);
+        public static Result<T> Fail<T>(DomainError error) => new Result<T>.Failure(error);
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Calliope.ResultExtensions;
 
 namespace Calliope.Validation
 {
@@ -27,9 +28,9 @@ namespace Calliope.Validation
             }
             
             if(failures.Any()) 
-                return new Result<bool>.Failure(new ValidationFailed(failures));
+                return Fail<bool>(new ValidationFailed(failures));
 
-            return new Result<bool>.Success(true);
+            return Ok(true);
         }
 
         public abstract IEnumerable<(Func<TInput, bool> rule, string error)> Rules();
