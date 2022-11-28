@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Calliope.Validation;
 using FluentValidation.Validators;
 
 namespace Calliope.FluentValidation
