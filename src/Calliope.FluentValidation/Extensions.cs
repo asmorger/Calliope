@@ -8,9 +8,9 @@ public static class Extensions
 {
     public static IRuleBuilderOptions<T, TProperty> ValidFor<T, TProperty, TValueObject>
         (this IRuleBuilder<T, TProperty> ruleBuilder)
-        where TValueObject : IValidatable<TProperty>
+        where TValueObject : Validatable<TProperty>
     {
-        var method = typeof(TValueObject).GetMethod(nameof(IValidatable<TProperty>.GetValidationRules),
+        var method = typeof(TValueObject).GetMethod(nameof(Validatable<TProperty>.GetValidationRules),
             BindingFlags.Public | BindingFlags.Static);
         var rules = (IEnumerable<ValidationRule<TProperty>>) method!.Invoke(null, null)!;
 

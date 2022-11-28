@@ -8,7 +8,8 @@ namespace Calliope;
 
 public record ValidationRule<T>(Func<T, bool> Check, Func<T, string> ErrorFactory);
 
-public interface IValidatable<TSource>
+// ReSharper disable once InconsistentNaming
+public interface Validatable<TSource>
 {
     static abstract IEnumerable<ValidationRule<TSource>> GetValidationRules();
 }

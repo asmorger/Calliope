@@ -52,7 +52,7 @@ public class ValidatorTests
     public void Extension_method_for_value_object_sets_validator() =>
         new TestRequestValidator().ShouldHaveValidationErrorFor(r => r.Value, -42);
 
-    private record TestInteger(int Value) : IValidatable<int>
+    private record TestInteger(int Value) : Validatable<int>
     {
         public static IEnumerable<ValidationRule<int>> GetValidationRules() => new[]
         {

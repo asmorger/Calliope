@@ -3,7 +3,7 @@ using Calliope.Rules;
 
 namespace Calliope.Tests;
 
-public record StreetNumber(int Number) : IValidatable<int>
+public record StreetNumber(int Number) : Validatable<int>
 {
     public static IEnumerable<ValidationRule<int>> GetValidationRules() => new[]
     {
