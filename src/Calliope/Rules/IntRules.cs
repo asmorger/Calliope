@@ -1,4 +1,6 @@
-namespace Calliope.Validation;
+using Calliope.Validation;
+
+namespace Calliope.Rules;
 
 public static class IntRules
 {
