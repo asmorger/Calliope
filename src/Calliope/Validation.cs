@@ -11,7 +11,7 @@ public record ValidationRule<T>(Func<T, bool> Check, Func<T, string> ErrorFactor
 // ReSharper disable once InconsistentNaming
 public interface Validatable<TSource>
 {
-    static abstract IEnumerable<ValidationRule<TSource>> GetValidationRules();
+    static abstract IEnumerable<ValidationRule<TSource>> Constraints();
 }
 
 public static class Validator

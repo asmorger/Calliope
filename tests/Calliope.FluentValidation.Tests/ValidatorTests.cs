@@ -13,13 +13,13 @@ public class ValidatorTests
 {
     [Fact]
     public void Validator_can_be_created() =>
-        Assert.NotNull(new ValueForValidator<int>(TestInteger.GetValidationRules()));
+        Assert.NotNull(new ValueForValidator<int>(TestInteger.Constraints()));
 
     [Fact]
     public void Valdiator_succeeds_when_item_is_valid()
     {
         var instance = new TestRequest {Value = 42};
-        var validator = new ValueForValidator<int>(TestInteger.GetValidationRules());
+        var validator = new ValueForValidator<int>(TestInteger.Constraints());
 
         var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
         var context = new ValidationContext(instance, new PropertyChain(), selector);
@@ -35,7 +35,7 @@ public class ValidatorTests
     public void Valdiator_sets_proper_validation_message_when_item_is_invalid()
     {
         var instance = new TestRequest {Value = -42};
-        var validator = new ValueForValidator<int>(TestInteger.GetValidationRules());
+        var validator = new ValueForValidator<int>(TestInteger.Constraints());
 
         var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
         var context = new ValidationContext(instance, new PropertyChain(), selector);
@@ -54,7 +54,7 @@ public class ValidatorTests
 
     private record TestInteger(int Value) : Validatable<int>
     {
-        public static IEnumerable<ValidationRule<int>> GetValidationRules() => new[]
+        public static IEnumerable<ValidationRule<int>> Constraints() => new[]
         {
             IntRules.GreaterThanZero
         };
@@ -64,7 +64,7 @@ public class ValidatorTests
     {
         internal TestRequestValidator()
         {
-            RuleFor(x => x.Value).ValidFor<TestRequest, int, TestInteger>();
+            RuleFor(x => x.Value).Using(TestInteger.Constraints());
         }
     }
 

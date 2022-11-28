@@ -5,7 +5,7 @@ namespace Calliope.Tests;
 
 public record StreetNumber(int Number) : ValueObject, Validatable<int>
 {
-    public static IEnumerable<ValidationRule<int>> GetValidationRules() => new[]
+    public static IEnumerable<ValidationRule<int>> Constraints() => new[]
     {
         IntRules.GreaterThanZero
     };

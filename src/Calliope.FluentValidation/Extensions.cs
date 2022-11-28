@@ -10,10 +10,14 @@ public static class Extensions
         (this IRuleBuilder<T, TProperty> ruleBuilder)
         where TValueObject : Validatable<TProperty>
     {
-        var method = typeof(TValueObject).GetMethod(nameof(Validatable<TProperty>.GetValidationRules),
+        var method = typeof(TValueObject).GetMethod(nameof(Validatable<TProperty>.Constraints),
             BindingFlags.Public | BindingFlags.Static);
         var rules = (IEnumerable<ValidationRule<TProperty>>) method!.Invoke(null, null)!;
 
         return ruleBuilder.SetValidator(new ValueForValidator<TProperty>(rules));
     }
+    
+    public static IRuleBuilderOptions<T, TProperty> Using<T, TProperty>
+        (this IRuleBuilder<T, TProperty> ruleBuilder, IEnumerable<ValidationRule<TProperty>> rules) =>
+        ruleBuilder.SetValidator(new ValueForValidator<TProperty>(rules));
 }
