@@ -45,7 +45,7 @@ public class ValidatorTests
         var result = validator.Validate(propertyValidatorContext).ToList();
 
         Assert.NotEmpty(result);
-        Assert.Equal("-42 must be greater than 0", result.First().ErrorMessage);
+        Assert.Equal("Value must be greater than 0", result.First().ErrorMessage);
     }
 
     [Fact]
