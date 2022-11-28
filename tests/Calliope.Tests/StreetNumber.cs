@@ -7,6 +7,6 @@ public record StreetNumber(int Number) : IValidatable<int>
 {
     public static IEnumerable<ValidationRule<int>> GetValidationRules() => new[]
     {
-        new IntValidators.GreaterThanZero()
+        IntRules.GreaterThanZero
     };
 }

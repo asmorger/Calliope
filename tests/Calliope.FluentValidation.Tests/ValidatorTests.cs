@@ -15,7 +15,7 @@ namespace Calliope.FluentValidation.Tests
         {
             public static IEnumerable<ValidationRule<int>> GetValidationRules() => new []
             {
-                new IntValidators.GreaterThanZero()
+                IntRules.GreaterThanZero
             };
         }
 
