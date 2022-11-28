@@ -17,8 +17,7 @@ namespace Calliope.FluentValidation
         protected override bool IsValid(PropertyValidatorContext context)
         {
             var item = (TSource) context.PropertyValue;
-            var validator = new Validator<TSource>();
-            var result = validator.Validate(item, _rules);
+            var result = Validator.Validate(item, _rules);
 
             if (result.IsError(out var domainException))
             {
