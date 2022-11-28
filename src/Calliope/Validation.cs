@@ -23,13 +23,10 @@ public static class Validator
         {
             var test = rule.Check.Invoke(source);
 
-            if (!test)
-            {
-                failures.Add(rule.ErrorFactory.Invoke(source));
-            }
+            if (!test) failures.Add(rule.ErrorFactory.Invoke(source));
         }
-            
-        if(failures.Any()) 
+
+        if (failures.Any())
             return Fail<bool>(new ValidationFailed(failures));
 
         return Ok(true);
@@ -55,7 +52,7 @@ public class ValidationFailed : DomainError
         var builder = new StringBuilder();
         builder.AppendLine("Validation Failed!");
 
-        foreach(var message in Messages)
+        foreach (var message in Messages)
         {
             builder.Append("  ");
             builder.AppendLine(message);

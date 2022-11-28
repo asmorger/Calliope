@@ -1,7 +1,3 @@
-namespace Calliope
-{
-    public interface DomainEvent
-    {
-        
-    }
-}
+namespace Calliope;
+
+public interface DomainEvent { }

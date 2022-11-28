@@ -1,34 +1,33 @@
 using System.Collections.Generic;
 using FluentValidation.Validators;
 
-namespace Calliope.FluentValidation
+namespace Calliope.FluentValidation;
+
+public class ValueForValidator<TSource> : PropertyValidator
 {
-    public class ValueForValidator<TSource> : PropertyValidator
+    private readonly IEnumerable<ValidationRule<TSource>> _rules;
+
+    public ValueForValidator(IEnumerable<ValidationRule<TSource>> rules)
+        : base("{ValidationMessage}")
     {
-        private readonly IEnumerable<ValidationRule<TSource>> _rules;
+        _rules = rules;
+    }
 
-        public ValueForValidator(IEnumerable<ValidationRule<TSource>> rules) 
-            : base("{ValidationMessage}")
+    protected override bool IsValid(PropertyValidatorContext context)
+    {
+        var item = (TSource) context.PropertyValue;
+        var result = Validator.Validate(item, _rules);
+
+        if (result.IsError(out var domainException))
         {
-            _rules = rules;
+            if (domainException is ValidationFailed validationFailed)
+                foreach (var message in validationFailed.Messages)
+                    context.MessageFormatter.AppendArgument("ValidationMessage",
+                        message.Replace(Placeholder.TypeName, "{PropertyName}"));
+
+            return false;
         }
 
-        protected override bool IsValid(PropertyValidatorContext context)
-        {
-            var item = (TSource) context.PropertyValue;
-            var result = Validator.Validate(item, _rules);
-
-            if (result.IsError(out var domainException))
-            {
-                if (domainException is ValidationFailed validationFailed)
-                    foreach (var message in validationFailed.Messages)
-                        context.MessageFormatter.AppendArgument("ValidationMessage",
-                            message.Replace(Placeholder.TypeName, "{PropertyName}"));
-
-                return false;
-            }
-
-            return true;
-        }
+        return true;
     }
 }

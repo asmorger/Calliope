@@ -1,61 +1,61 @@
 using System;
 
-namespace Calliope
+namespace Calliope;
+
+// https://enterprisecraftsmanship.com/posts/entity-base-class/
+// https://enterprisecraftsmanship.com/posts/new-online-course-ddd-and-ef-core/
+// implementation based upon Vladimir Khorikov's solution
+public abstract class Entity
 {
-    // https://enterprisecraftsmanship.com/posts/entity-base-class/
-    // https://enterprisecraftsmanship.com/posts/new-online-course-ddd-and-ef-core/
-    // implementation based upon Vladimir Khorikov's solution
-    public abstract class Entity
+    protected Entity() { }
+
+    protected Entity(int id) : this()
     {
-        protected Entity() { }
-        protected Entity(int id) : this()
-        {
-            Id = id;
-        }
+        Id = id;
+    }
 
-        public virtual int Id { get; private set; }
-        
-        public override bool Equals(object? obj)
-        {
-            if (!(obj is Entity other))
-                return false;
+    public virtual int Id { get; }
 
-            if (ReferenceEquals(this, other))
-                return true;
+    public override bool Equals(object? obj)
+    {
+        if (!(obj is Entity other))
+            return false;
 
-            if (GetRealType() != other.GetRealType())
-                return false;
+        if (ReferenceEquals(this, other))
+            return true;
 
-            if (Id == 0 || other.Id == 0)
-                return false;
+        if (GetRealType() != other.GetRealType())
+            return false;
 
-            return Id == other.Id;
-        }
+        if (Id == 0 || other.Id == 0)
+            return false;
 
-        public static bool operator ==(Entity? a, Entity? b)
-        {
-            if (a is null && b is null)
-                return true;
+        return Id == other.Id;
+    }
 
-            if (a is null || b is null)
-                return false;
+    public static bool operator ==(Entity? a, Entity? b)
+    {
+        if (a is null && b is null)
+            return true;
 
-            return a.Equals(b);
-        }
+        if (a is null || b is null)
+            return false;
 
-        public static bool operator !=(Entity a, Entity b) => !(a == b);
+        return a.Equals(b);
+    }
 
-        // ReSharper disable once NonReadonlyMemberInGetHashCode
-        public override int GetHashCode() => (GetRealType().ToString() + Id).GetHashCode();
+    public static bool operator !=(Entity a, Entity b) => !(a == b);
 
-        private Type GetRealType()
-        {
-            var type = GetType();
+    // ReSharper disable once NonReadonlyMemberInGetHashCode
+    public override int GetHashCode() => (GetRealType().ToString() + Id).GetHashCode();
 
-            if (type.ToString().Contains("Castle.Proxies."))
-                return type.BaseType!;
+    private Type GetRealType()
+    {
+        var type = GetType();
 
-            return type;
-        }
+        if (type.ToString().Contains("Castle.Proxies."))
+            return type.BaseType!;
+
+        return type;
     }
 }

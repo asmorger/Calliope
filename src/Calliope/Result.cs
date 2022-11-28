@@ -1,45 +1,44 @@
- #nullable enable
- using System;
- using System.Diagnostics.CodeAnalysis;
+#nullable enable
+using System;
+using System.Diagnostics.CodeAnalysis;
 
- namespace Calliope
+namespace Calliope; 
+
+public record Result<T>
 {
-    public record Result<T>
-    {
-        public record Success(T Value) : Result<T>;
+    private Result() { }
 
-        public record Failure(DomainError Error) : Result<T>;
-        
-        private Result() { }
-
-        public TOutput Match<TOutput>(Func<T, TOutput> onSuccess,
-            Func<DomainError, TOutput> onFailure) =>
-            this switch
-            {
-                Failure failure => onFailure(failure.Error),
-                Success success => onSuccess(success.Value),
-                _ => throw new ArgumentOutOfRangeException()
-            };
-
-        public bool IsError([NotNullWhen(true)] out DomainError? error)
+    public TOutput Match<TOutput>(Func<T, TOutput> onSuccess,
+        Func<DomainError, TOutput> onFailure) =>
+        this switch
         {
-            if (this is Failure failure)
-            {
-                error = failure.Error;
-                return true;
-            }
+            Failure failure => onFailure(failure.Error),
+            Success success => onSuccess(success.Value),
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
-            error = null;
-            return false;
+    public bool IsError([NotNullWhen(true)] out DomainError? error)
+    {
+        if (this is Failure failure)
+        {
+            error = failure.Error;
+            return true;
         }
 
-        public bool IsError() => this is Failure;
-        public bool IsOk() => this is Success;
+        error = null;
+        return false;
     }
 
-    public static class ResultExtensions
-    {
-        public static Result<T> Ok<T>(T value) => new Result<T>.Success(value);
-        public static Result<T> Fail<T>(DomainError error) => new Result<T>.Failure(error);
-    }
+    public bool IsError() => this is Failure;
+    public bool IsOk() => this is Success;
+
+    public record Success(T Value) : Result<T>;
+
+    public record Failure(DomainError Error) : Result<T>;
+}
+
+public static class ResultExtensions
+{
+    public static Result<T> Ok<T>(T value) => new Result<T>.Success(value);
+    public static Result<T> Fail<T>(DomainError error) => new Result<T>.Failure(error);
 }
