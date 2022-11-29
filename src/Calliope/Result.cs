@@ -49,15 +49,10 @@ public record Result<T>
     public bool IsError() => this is Failure;
     public bool IsOk() => this is Success;
 
-    public Result<TOutput> Bind<TOutput>(Func<T, Result<TOutput>> onSuccess) =>
-        this switch
-        {
-            Success success => onSuccess.Invoke(success.Value),
-            Failure failure => new Result<TOutput>.Failure(failure.Error),
-            _ => throw new ArgumentOutOfRangeException()
-        };
+    public Result<TOutput> Select<TOutput>(Func<T, Result<TOutput>> onSuccess) =>
+        Match(onSuccess.Invoke, e => new Result<TOutput>.Failure(e));
     
-    public async Task<Result<TOutput>> BindAsync<TOutput>(Func<T, Task<Result<TOutput>>> onSuccess) =>
+    public async Task<Result<TOutput>> SelectAsync<TOutput>(Func<T, Task<Result<TOutput>>> onSuccess) =>
         this switch
         {
             Success success => await onSuccess.Invoke(success.Value),
@@ -71,7 +66,7 @@ public static class ResultExtensions
     public static Result<T> Ok<T>(T value) => new Result<T>.Success(value);
     public static Result<T> Fail<T>(DomainError error) => new Result<T>.Failure(error);
     
-    public static async Task<Result<TOutput>> BindAsync<T, TOutput>(this Task<Result<T>> action, 
+    public static async Task<Result<TOutput>> SelectAsync<T, TOutput>(this Task<Result<T>> action, 
         Func<T, Task<Result<TOutput>>> onSuccess)
     {
         var result = await action;
@@ -83,7 +78,7 @@ public static class ResultExtensions
         };
     }
     
-    public static async Task<Result<(T, TOutput)>> BindAndContinueAsync<T, TOutput>(this Task<Result<T>> action, 
+    public static async Task<Result<(T, TOutput)>> SelectAndContinueAsync<T, TOutput>(this Task<Result<T>> action, 
         Func<T, Task<Result<TOutput>>> onSuccess)
     {
         var result = await action;
@@ -105,7 +100,7 @@ public static class ResultExtensions
         }
     }
     
-    public static async Task<Result<(T, TOutput)>> BindAndContinueAsync<T, TOutput>(this Task<Result<T>> action, 
+    public static async Task<Result<(T, TOutput)>> SelectAndContinueAsync<T, TOutput>(this Task<Result<T>> action, 
         Func<T, Result<TOutput>> onSuccess)
     {
         var result = await action;
