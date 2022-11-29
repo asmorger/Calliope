@@ -1,12 +1,17 @@
 #nullable enable
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Calliope; 
 
 public record Result<T>
 {
     private Result() { }
+    
+    public record Success(T Value) : Result<T>;
+
+    public record Failure(DomainError Error) : Result<T>;
 
     public TOutput Match<TOutput>(Func<T, TOutput> onSuccess,
         Func<DomainError, TOutput> onFailure) =>
@@ -28,17 +33,97 @@ public record Result<T>
         error = null;
         return false;
     }
+    
+    public bool IsOk([NotNullWhen(true)] out T? value)
+    {
+        if (this is Success success)
+        {
+            value = success.Value!;
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
 
     public bool IsError() => this is Failure;
     public bool IsOk() => this is Success;
 
-    public record Success(T Value) : Result<T>;
-
-    public record Failure(DomainError Error) : Result<T>;
+    public Result<TOutput> Bind<TOutput>(Func<T, Result<TOutput>> onSuccess) =>
+        this switch
+        {
+            Success success => onSuccess.Invoke(success.Value),
+            Failure failure => new Result<TOutput>.Failure(failure.Error),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    
+    public async Task<Result<TOutput>> BindAsync<TOutput>(Func<T, Task<Result<TOutput>>> onSuccess) =>
+        this switch
+        {
+            Success success => await onSuccess.Invoke(success.Value),
+            Failure failure => new Result<TOutput>.Failure(failure.Error),
+            _ => throw new ArgumentOutOfRangeException()
+        };
 }
 
 public static class ResultExtensions
 {
     public static Result<T> Ok<T>(T value) => new Result<T>.Success(value);
     public static Result<T> Fail<T>(DomainError error) => new Result<T>.Failure(error);
+    
+    public static async Task<Result<TOutput>> BindAsync<T, TOutput>(this Task<Result<T>> action, 
+        Func<T, Task<Result<TOutput>>> onSuccess)
+    {
+        var result = await action;
+        return result switch
+        {
+            Result<T>.Success success => await onSuccess.Invoke(success.Value),
+            Result<T>.Failure failure => new Result<TOutput>.Failure(failure.Error),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+    
+    public static async Task<Result<(T, TOutput)>> BindAndContinueAsync<T, TOutput>(this Task<Result<T>> action, 
+        Func<T, Task<Result<TOutput>>> onSuccess)
+    {
+        var result = await action;
+
+        switch (result)
+        {
+            case Result<T>.Success s:
+                var result2 = await onSuccess.Invoke(s.Value);
+                return result2 switch
+                {
+                    Result<TOutput>.Success success => new Result<(T, TOutput)>.Success((s.Value, success.Value)),
+                    Result<TOutput>.Failure failure => new Result<(T, TOutput)>.Failure(failure.Error),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            case Result<T>.Failure f:
+                return new Result<(T, TOutput)>.Failure(f.Error);
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
+    public static async Task<Result<(T, TOutput)>> BindAndContinueAsync<T, TOutput>(this Task<Result<T>> action, 
+        Func<T, Result<TOutput>> onSuccess)
+    {
+        var result = await action;
+
+        switch (result)
+        {
+            case Result<T>.Success s:
+                var result2 = onSuccess.Invoke(s.Value);
+                return result2 switch
+                {
+                    Result<TOutput>.Success success => new Result<(T, TOutput)>.Success((s.Value, success.Value)),
+                    Result<TOutput>.Failure failure => new Result<(T, TOutput)>.Failure(failure.Error),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            case Result<T>.Failure f:
+                return new Result<(T, TOutput)>.Failure(f.Error);
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 }
