@@ -53,7 +53,11 @@ public record Result<T>
 public static class ResultExtensions
 {
     public static Result<T> Ok<T>(T value) => new Result<T>.Success(value);
+    public static Task<Result<T>> OkAsync<T>(T value) =>
+        Task.FromResult( (Result<T>) new Result<T>.Success(value));
     public static Result<T> Fail<T>(DomainError error) => new Result<T>.Failure(error);
+    public static Task<Result<T>> FailAsync<T>(DomainError error) => 
+        Task.FromResult( (Result<T>) new Result<T>.Failure(error));
    
     public static Result<TResult> SelectMany<TFirst, TSecond, TResult>(
         this Result<TFirst> first,
