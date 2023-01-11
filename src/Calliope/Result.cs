@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Calliope; 
@@ -8,10 +9,16 @@ namespace Calliope;
 public record Result<T>
 {
     private Result() { }
-    
-    public record Success(T Value) : Result<T>;
 
-    public record Failure(DomainError Error) : Result<T>;
+    public record Success(T Value) : Result<T>
+    {
+        public override string ToString() => $"Ok({Value})";
+    }
+
+    public record Failure(DomainError Error) : Result<T>
+    {
+        public override string ToString() => $"Fail({Error.ToErrorMessage()})";
+    }
 
     public TOutput Match<TOutput>(Func<T, TOutput> onSuccess,
         Func<DomainError, TOutput> onFailure) =>
@@ -98,5 +105,25 @@ public static class ResultExtensions
             },
             e => Task.FromResult(Fail<TResult>(e))
         );
+    }
+
+    // This forces an allocation of Expression and the runtime compile of that expression.
+    // This is so that we can embed the predicate in the Failure message for clarity.
+    // Good tradeoff?  ¯\_(ツ)_/¯
+    // Performance tests are probably in order
+    public static Result<TResult> Where<TResult>(this Result<TResult> source, Expression<Func<TResult, bool>> predicate)
+    {
+        if (source.IsOk(out var ok))
+        {
+            var check = predicate.Compile();
+            if (check(ok))
+            {
+                return source;
+            }
+
+            return Fail<TResult>(new Message($"{source} did not satisfy {predicate}"));
+        }
+
+        return source;
     }
 }

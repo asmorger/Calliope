@@ -39,7 +39,7 @@ public class ResultTests
     public void Monadic_comprehension_early_exits_when_second_result_is_failure()
     {
         var result =
-            from i in SuccessInt()
+            from i in SuccessInt() 
             from s in Failure()
             select s;
 
@@ -73,6 +73,21 @@ public class ResultTests
         result.Should().BeSuccessful();
         result.IsOk(out var value);
         value.ShouldBe(30);
+    }
+
+    [Fact]
+    public void Monadic_comprehension_early_exits_when_where_clause_is_not_matched()
+    {
+        var result =
+            from i in SuccessInt()
+            where i == -1
+            select i;
+
+        result.Should().BeError();
+
+        result.IsError(out var message);
+        message!.ToErrorMessage().Should().EndWith("did not satisfy i => (i == -1)");
+
     }
 
     private class ErrorMessage : DomainError

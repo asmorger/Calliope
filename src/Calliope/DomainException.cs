@@ -8,3 +8,9 @@ public interface DomainError
 
     public string ToErrorMessage();
 }
+
+public record Message(string Value) : DomainError
+{
+    public List<string> Messages => new(new[] {Value});
+    public string ToErrorMessage() => Value;
+}
