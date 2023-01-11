@@ -57,6 +57,7 @@ public record Result<T>
     public bool IsOk() => this is Success;
 }
 
+[System.Diagnostics.StackTraceHidden]
 public static class ResultExtensions
 {
     public static Result<T> Ok<T>(T value) => new Result<T>.Success(value);
