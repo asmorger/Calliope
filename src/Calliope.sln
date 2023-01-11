@@ -15,10 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support", "Support", "{177E
 		..\Directory.Build.props = ..\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FCA22901-6071-4EDF-8BAC-4A78BBAD30E1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.SampleDomain", "Calliope.SampleDomain\Calliope.SampleDomain.csproj", "{6937EB8F-EFEF-4EAC-AF45-C4201EC8F1EC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calliope.FluentAssertions", "Calliope.FluentAssertions\Calliope.FluentAssertions.csproj", "{3AE749B6-E843-43E9-9A45-0056CABF4F6E}"
 EndProject
 Global
@@ -43,10 +39,6 @@ Global
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6937EB8F-EFEF-4EAC-AF45-C4201EC8F1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6937EB8F-EFEF-4EAC-AF45-C4201EC8F1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6937EB8F-EFEF-4EAC-AF45-C4201EC8F1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6937EB8F-EFEF-4EAC-AF45-C4201EC8F1EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3AE749B6-E843-43E9-9A45-0056CABF4F6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3AE749B6-E843-43E9-9A45-0056CABF4F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AE749B6-E843-43E9-9A45-0056CABF4F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,6 +47,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{80799E3E-4DB7-4891-BC98-BC4B08EF3FBB} = {F82149C8-C989-4538-A0EE-23EC3CAAF90A}
 		{4BFB40DF-D675-4F50-9F2D-8C88EE873B97} = {F82149C8-C989-4538-A0EE-23EC3CAAF90A}
-		{6937EB8F-EFEF-4EAC-AF45-C4201EC8F1EC} = {FCA22901-6071-4EDF-8BAC-4A78BBAD30E1}
 	EndGlobalSection
 EndGlobal
